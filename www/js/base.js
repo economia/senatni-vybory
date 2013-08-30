@@ -24,11 +24,17 @@
   Klub = (function(){
     Klub.displayName = 'Klub';
     var prototype = Klub.prototype, constructor = Klub;
-    function Klub(id, nazev, $class){
+    function Klub(id, nazev){
       this.id = id;
       this.nazev = nazev;
-      this['class'] = $class;
       this.css = this.nazev.toLowerCase().replace('č', 'c').replace('ř', 'r').replace(/[^-0-9a-z]/g, '-');
+      this.pozice = this.css.charCodeAt(0);
+      if (this.css === 'kscm') {
+        this.pozice = 5;
+      }
+      if (this.css === 'nezaraz') {
+        this.pozice = 129;
+      }
     }
     return Klub;
   }());
@@ -98,6 +104,10 @@
         });
       }
       year_kluby = res$;
+      year_kluby.sort(function(a, b){
+        var ref$;
+        return ((ref$ = a.klub) != null ? ref$.pozice : void 8) - ((ref$ = b.klub) != null ? ref$.pozice : void 8);
+      });
       return new Year(year, pozice, year_kluby);
     });
     return new Barchart('#wrap', years);
