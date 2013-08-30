@@ -1,4 +1,8 @@
 body {
   margin: 0px;
   font-family: arial, sans-serif;
+  background: #eee;
+}
+body .barchart {
+  background: #fff;
 }
