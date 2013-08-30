@@ -136,7 +136,7 @@
     });
     x$ = barchart = new Barchart('#wrap', years);
     x$.redraw('kluby');
-    return window.filterParty = function(partyCss){
+    window.filterParty = function(partyCss){
       var x$, this$ = this;
       x$ = barchart;
       x$.filterData(function(year){
@@ -155,7 +155,20 @@
       x$.redraw('kluby');
       return setTimeout(function(){
         return barchart.redraw('poslanci');
-      }, 1200);
+      }, 600);
+    };
+    return window.killFilter = function(){
+      var x$, this$ = this;
+      barchart.redraw('kluby');
+      x$ = barchart;
+      x$.filterData(function(year){
+        year.kluby = year.klubyFull;
+        year.poslanci = year.poslanciFull;
+        return true;
+      });
+      return setTimeout(function(){
+        return barchart.redraw('kluby');
+      }, 600);
     };
   });
 }).call(this);

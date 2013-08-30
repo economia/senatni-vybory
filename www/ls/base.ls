@@ -81,5 +81,14 @@ window.filterParty = (partyCss) ->
                 level.klub?css == partyCss
             true
         ..redraw \kluby
-    <~ setTimeout _, 1200
+    <~ setTimeout _, 600
     barchart.redraw \poslanci
+window.killFilter = ->
+    barchart.redraw \kluby
+    barchart
+        ..filterData (year) ->
+            year.kluby = year.klubyFull
+            year.poslanci = year.poslanciFull
+            true
+    <~ setTimeout _, 600
+    barchart.redraw \kluby

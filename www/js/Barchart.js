@@ -57,6 +57,7 @@
       if (this.lastItem && this.lastItem !== this.item) {
         y$ = this.content.selectAll(".bar ." + this.lastItem);
         z$ = y$.transition();
+        z$.call(this.transitionStepper(1.7));
         z$['attr']('transform', "scale(0, 1)");
         z$.remove();
         return y$;
@@ -84,20 +85,20 @@
         return it.id;
       });
       x$ = this.levels;
-      x$.call(bind$(this, 'levelUpdater'));
-      x$.enter().call(bind$(this, 'levelCreator'));
       x$.exit().call(bind$(this, 'levelDestroyer'));
-      return x$;
+      x$.enter().call(bind$(this, 'levelCreator'));
+      return bar.selectAll("." + this.item + ".notHiding").call(bind$(this, 'levelUpdater'));
     },
     levelCreator: function(selection){
       var currentHeight, x$, this$ = this;
       currentHeight = 0;
       x$ = selection.append('rect');
       x$.call(bind$(this, 'levelShaper'));
+      x$.attr('transform', "scale(0, 1)");
       x$.attr('class', function(level){
         var css, ref$;
         css = ((ref$ = level.klub) != null ? ref$.css : void 8) || "void";
-        return level.type + " klub-" + css;
+        return "notHiding " + level.type + " klub-" + css;
       });
       x$.attr('data-tooltip', function(level){
         var nazev, ref$;
@@ -111,6 +112,8 @@
       x$.on('click', function(level){
         if (level.type === 'kluby') {
           return window.filterParty(level.klub.css);
+        } else {
+          return window.killFilter();
         }
       });
       x$.attr('width', this.x.rangeBand);
@@ -140,6 +143,7 @@
       x$.attr('y', function(it){
         return it.offset;
       });
+      x$.attr('transform', "scale(1, 1)");
       return x$;
     },
     levelUpdater: function(selection){
@@ -150,11 +154,13 @@
       return x$;
     },
     levelDestroyer: function(selection){
-      var x$;
-      x$ = selection.transition();
-      x$.call(this.transitionStepper(0));
-      x$['attr']('transform', "scale(0, 1)");
-      x$.remove();
+      var x$, y$;
+      x$ = selection;
+      x$.classed('notHiding', false);
+      y$ = x$.transition();
+      y$.call(this.transitionStepper(0));
+      y$.attr('transform', "scale(0, 1)");
+      y$.remove();
       return x$;
     }
   };

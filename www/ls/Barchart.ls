@@ -36,6 +36,7 @@ Bar =
         if @lastItem and @lastItem != @item
             @content.selectAll ".bar .#{@lastItem}"
                 ..transition!
+                    ..call @transitionStepper 1.7
                     ..\attr \transform "scale(0, 1)"
                     ..remove!
 
@@ -57,17 +58,19 @@ Level =
                 ~> it[@item]
                 (.id)
         @levels
-            ..call @~levelUpdater
-            ..enter!call @~levelCreator
             ..exit!call @~levelDestroyer
+            ..enter!call @~levelCreator
+        bar.selectAll ".#{@item}.notHiding"
+            .call @~levelUpdater
 
     levelCreator: (selection) ->
         currentHeight = 0
         selection.append \rect
             ..call @~levelShaper
+            ..attr \transform "scale(0, 1)"
             ..attr \class (level) ~>
                 css = level.klub?css || "void"
-                "#{level.type} klub-#{css}"
+                "notHiding #{level.type} klub-#{css}"
             ..attr \data-tooltip (level) ~>
                 if level.type == \poslanci
                     "#{level.poslanec.jmeno} #{level.poslanec.prijmeni}: #{level.pozice.length} pozic"
@@ -77,6 +80,8 @@ Level =
             ..on \click (level) ->
                 if level.type == \kluby
                     window.filterParty level.klub.css
+                else
+                    window.killFilter!
             ..attr \width @x.rangeBand
             ..attr \x \0
 
@@ -93,6 +98,7 @@ Level =
                 level.offset = @height - currentHeight
             ..attr \height (.height)
             ..attr \y (.offset)
+            ..attr \transform "scale(1, 1)"
 
     levelUpdater: (selection) ->
         selection.transition!
@@ -101,10 +107,12 @@ Level =
 
 
     levelDestroyer: (selection) ->
-        selection.transition!
-            ..call @transitionStepper 0
-            ..\attr \transform "scale(0, 1)"
-            ..remove!
+        selection
+            ..classed \notHiding no
+            ..transition!
+                ..call @transitionStepper 0
+                ..attr \transform "scale(0, 1)"
+                ..remove!
 
 
 Filter =
