@@ -105,8 +105,7 @@
   Filter = {
     filterData: function(filterFunction){
       this.dataFull == null && (this.dataFull = this.data);
-      this.data = this.dataFull;
-      this.data = this.data.filter(filterFunction);
+      this.data = this.dataFull.filter(filterFunction);
       return this.redraw();
     }
   };

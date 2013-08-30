@@ -64,8 +64,7 @@ Level =
 Filter =
     filterData: (filterFunction) ->
         @dataFull ?= @data
-        @data = @dataFull
-        @data .= filter filterFunction
+        @data = @dataFull.filter filterFunction
         @redraw!
 
 window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, Level, Filter

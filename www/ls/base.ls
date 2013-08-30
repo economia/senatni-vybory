@@ -66,6 +66,6 @@ barchart = new Barchart \#wrap years
 barchart.item = \poslanci
 barchart.filterData (year) ->
     year.klubyFull ?= year.kluby
-    year.kluby .= filter (level) ->
+    year.kluby = year.klubyFull.filter (level) ->
         level.klub?css == \cssd
     true
