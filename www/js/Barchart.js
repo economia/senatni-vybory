@@ -1,5 +1,5 @@
 (function(){
-  var Dimensionable, XScale, YScale, Bar, Filter, Barchart;
+  var Dimensionable, XScale, YScale, Bar, Level, Filter, Barchart;
   Dimensionable = {
     margin: {
       top: 0,
@@ -48,14 +48,20 @@
   };
   Bar = {
     barCreator: function(selection){
-      var currentHeight, bar, x$, this$ = this;
-      currentHeight = 0;
+      var bar, this$ = this;
       bar = selection.append('g').attr('transform', function(it){
         return "translate(" + this$.x(it.year) + ", 0)";
       }).attr('class', 'bar');
-      x$ = bar.selectAll('.klub').data(function(it){
+      return bar.selectAll('.klub').data(function(it){
         return it[this$.item];
-      }).enter().append('rect');
+      }).enter().call(bind$(this, 'levelCreator'));
+    }
+  };
+  Level = {
+    levelCreator: function(selection){
+      var currentHeight, x$, this$ = this;
+      currentHeight = 0;
+      x$ = selection.append('rect');
       x$.each(function(level, index){
         var height;
         if (index === 0) {
@@ -110,6 +116,7 @@
     importAll$(prototype, arguments[2]);
     importAll$(prototype, arguments[3]);
     importAll$(prototype, arguments[4]);
+    importAll$(prototype, arguments[5]);
     function Barchart(parentSelector, data){
       var x$, y$;
       this.parentSelector = parentSelector;
@@ -135,12 +142,12 @@
       return console.log(this.data);
     };
     return Barchart;
-  }(Dimensionable, XScale, YScale, Bar, Filter));
+  }(Dimensionable, XScale, YScale, Bar, Level, Filter));
+  function bind$(obj, key, target){
+    return function(){ return (target || obj)[key].apply(obj, arguments) };
+  }
   function importAll$(obj, src){
     for (var key in src) obj[key] = src[key];
     return obj;
-  }
-  function bind$(obj, key, target){
-    return function(){ return (target || obj)[key].apply(obj, arguments) };
   }
 }).call(this);

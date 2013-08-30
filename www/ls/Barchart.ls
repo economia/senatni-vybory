@@ -26,34 +26,39 @@ YScale =
 
 Bar =
     barCreator: (selection) ->
-        currentHeight = 0
         bar = selection.append \g
             .attr \transform ~> "translate(#{@x it.year}, 0)"
             .attr \class \bar
         bar.selectAll \.klub
             .data ~> it[@item]
             .enter!
-            .append \rect
-                ..each (level, index) ~>
-                    if index == 0 then currentHeight := 0
-                    height = Math.round @y level.pozice.length
-                    level.height = height
-                    if @item == \poslanci then level.height -= 0.5
-                    currentHeight += height
-                    level.offset = @height - currentHeight
-                ..attr \class (level) ->
-                    css = level.klub?css || "void"
-                    "klub klub-#{css}"
-                ..attr \data-tooltip (level) ~>
-                    if @item == \poslanci
-                        "#{level.poslanec.jmeno} #{level.poslanec.prijmeni}: #{level.pozice.length} pozic"
-                    else
-                        nazev = level.klub?nazev || "Nezařazení"
-                        "#{nazev}: #{level.pozice.length} pozic"
-                ..attr \width @x.rangeBand
-                ..attr \height (.height)
-                ..attr \x \0
-                ..attr \y (.offset)
+            .call @~levelCreator
+
+Level =
+    levelCreator: (selection) ->
+        currentHeight = 0
+        selection.append \rect
+            ..each (level, index) ~>
+                if index == 0 then currentHeight := 0
+                height = Math.round @y level.pozice.length
+                level.height = height
+                if @item == \poslanci then level.height -= 0.5
+                currentHeight += height
+                level.offset = @height - currentHeight
+            ..attr \class (level) ->
+                css = level.klub?css || "void"
+                "klub klub-#{css}"
+            ..attr \data-tooltip (level) ~>
+                if @item == \poslanci
+                    "#{level.poslanec.jmeno} #{level.poslanec.prijmeni}: #{level.pozice.length} pozic"
+                else
+                    nazev = level.klub?nazev || "Nezařazení"
+                    "#{nazev}: #{level.pozice.length} pozic"
+            ..attr \width @x.rangeBand
+            ..attr \height (.height)
+            ..attr \x \0
+            ..attr \y (.offset)
+
 Filter =
     filterData: (filterFunction) ->
         @dataFull ?= @data
@@ -61,7 +66,7 @@ Filter =
         @data .= filter filterFunction
         @redraw!
 
-window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, Filter
+window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, Level, Filter
     (@parentSelector, @data) ->
         @item = \kluby
         @computeDimensions 650 600
