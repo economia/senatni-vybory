@@ -34,3 +34,5 @@ years = data.years.map ({year, pozice}) ->
         poslanec = poslanci[poslanec_id]
         new Pozice poslanec, klub, vybor
     new Year year, pozice
+
+new Barchart \#wrap years

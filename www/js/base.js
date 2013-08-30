@@ -63,7 +63,7 @@
       poslanec_data = ref$[id];
       poslanci[id] = new Poslanec(id, poslanec_data);
     }
-    return years = data.years.map(function(arg$){
+    years = data.years.map(function(arg$){
       var year, pozice;
       year = arg$.year, pozice = arg$.pozice;
       pozice = pozice.map(function(arg$){
@@ -76,5 +76,6 @@
       });
       return new Year(year, pozice);
     });
+    return new Barchart('#wrap', years);
   });
 }).call(this);
