@@ -21,20 +21,24 @@ YScale =
 
 Bar =
     barCreator: (selection) ->
-        unitHeight = @y 1
+        currentHeight = 0
         selection.append \g
             .attr \transform ~> "translate(#{@x it.year}, 0)"
             .attr \class \bar
             .selectAll \.pozice
-            .data (.pozice)
+            .data (.kluby)
             .enter!
             .append \rect
-                ..attr \class \pozice
+                ..each (klub, index) ~>
+                    if index == 0 then currentHeight := 0
+                    klub.height = Math.round @y klub.pozice.length
+                    currentHeight += klub.height
+                    klub.offset = @height - currentHeight
+                ..attr \class \klub
                 ..attr \width @x.rangeBand
-                ..attr \height unitHeight
+                ..attr \height (.height)
                 ..attr \x \0
-                ..attr \y (pozice, index) ~>
-                    @height - index * unitHeight
+                ..attr \y (.offset)
 
 window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar
     (@parentSelector, @data) ->
