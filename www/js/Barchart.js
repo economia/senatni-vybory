@@ -108,6 +108,11 @@
           return nazev + ": " + level.pozice.length + " pozic";
         }
       });
+      x$.on('click', function(level){
+        if (level.type === 'kluby') {
+          return window.filterParty(level.klub.css);
+        }
+      });
       x$.attr('width', this.x.rangeBand);
       x$.attr('x', '0');
       return x$;

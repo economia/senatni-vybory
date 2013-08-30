@@ -74,6 +74,9 @@ Level =
                 else
                     nazev = level.klub?nazev || "Nezařazení"
                     "#{nazev}: #{level.pozice.length} pozic"
+            ..on \click (level) ->
+                if level.type == \kluby
+                    window.filterParty level.klub.css
             ..attr \width @x.rangeBand
             ..attr \x \0
 

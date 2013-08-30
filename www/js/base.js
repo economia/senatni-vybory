@@ -135,27 +135,27 @@
       return new Year(year, pozice, year_kluby, year_poslanci);
     });
     x$ = barchart = new Barchart('#wrap', years);
-    x$.drawBars('kluby');
-    return setTimeout(function(){
-      var x$;
+    x$.redraw('kluby');
+    return window.filterParty = function(partyCss){
+      var x$, this$ = this;
       x$ = barchart;
       x$.filterData(function(year){
         year.klubyFull == null && (year.klubyFull = year.kluby);
         year.poslanciFull == null && (year.poslanciFull = year.poslanci);
         year.kluby = year.klubyFull.filter(function(level){
           var ref$;
-          return ((ref$ = level.klub) != null ? ref$.css : void 8) === 'cssd';
+          return ((ref$ = level.klub) != null ? ref$.css : void 8) === partyCss;
         });
         year.poslanci = year.poslanciFull.filter(function(level){
           var ref$;
-          return ((ref$ = level.klub) != null ? ref$.css : void 8) === 'cssd';
+          return ((ref$ = level.klub) != null ? ref$.css : void 8) === partyCss;
         });
         return true;
       });
       x$.redraw('kluby');
       return setTimeout(function(){
         return barchart.redraw('poslanci');
-      }, 1400);
-    }, 100);
+      }, 1200);
+    };
   });
 }).call(this);

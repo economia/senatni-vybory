@@ -69,17 +69,17 @@ years = data.years.map ({year, pozice}) ->
     new Year year, pozice, year_kluby, year_poslanci
 
 barchart = new Barchart \#wrap years
-    ..drawBars \kluby
-<~ setTimeout _, 100
-barchart
-    ..filterData (year) ->
-        year.klubyFull ?= year.kluby
-        year.poslanciFull ?= year.poslanci
-        year.kluby = year.klubyFull.filter (level) ->
-            level.klub?css == \cssd
-        year.poslanci = year.poslanciFull.filter (level) ->
-            level.klub?css == \cssd
-        true
     ..redraw \kluby
-<~ setTimeout _, 1400
-barchart.redraw \poslanci
+window.filterParty = (partyCss) ->
+    barchart
+        ..filterData (year) ->
+            year.klubyFull ?= year.kluby
+            year.poslanciFull ?= year.poslanci
+            year.kluby = year.klubyFull.filter (level) ->
+                level.klub?css == partyCss
+            year.poslanci = year.poslanciFull.filter (level) ->
+                level.klub?css == partyCss
+            true
+        ..redraw \kluby
+    <~ setTimeout _, 1200
+    barchart.redraw \poslanci
