@@ -58,6 +58,7 @@ years = data.years.map ({year, pozice}) ->
         year_poslanec
     year_kluby.sort (a, b) ->
         a.klub?pozice - b.klub?pozice
+    year_poslanci.sort (a, b) -> a.pozice.length - b.pozice.length
 
     new Year year, pozice, year_kluby, year_poslanci
 

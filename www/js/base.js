@@ -128,6 +128,9 @@
         var ref$;
         return ((ref$ = a.klub) != null ? ref$.pozice : void 8) - ((ref$ = b.klub) != null ? ref$.pozice : void 8);
       });
+      year_poslanci.sort(function(a, b){
+        return a.pozice.length - b.pozice.length;
+      });
       return new Year(year, pozice, year_kluby, year_poslanci);
     });
     return new Barchart('#wrap', years);
