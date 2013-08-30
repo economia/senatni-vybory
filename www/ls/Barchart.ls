@@ -24,10 +24,9 @@ Bar =
         console.log @height
         selection.append \rect
             ..attr \width @x.rangeBand
-            ..attr \height 50
+            ..attr \height ~> @y it.pozice.length
             ..attr \x ~> @x it.year
-            ..attr \y @height - 50
-
+            ..attr \y ~> @height - @y it.pozice.length
 
 window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar
     (@parentSelector, @data) ->

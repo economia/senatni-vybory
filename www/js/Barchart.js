@@ -48,11 +48,15 @@
       console.log(this.height);
       x$ = selection.append('rect');
       x$.attr('width', this.x.rangeBand);
-      x$.attr('height', 50);
+      x$.attr('height', function(it){
+        return this$.y(it.pozice.length);
+      });
       x$.attr('x', function(it){
         return this$.x(it.year);
       });
-      x$.attr('y', this.height - 50);
+      x$.attr('y', function(it){
+        return this$.height - this$.y(it.pozice.length);
+      });
       return x$;
     }
   };
