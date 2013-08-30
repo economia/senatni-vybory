@@ -1,6 +1,6 @@
 new Tooltip!watchElements!
 class Year
-    (@year, @pozice, @kluby) ->
+    (@year, @pozice, @kluby, @poslanci) ->
 
 class Pozice
     (@poslanec, @klub, @vybor) ->
@@ -42,16 +42,23 @@ years = data.years.map ({year, pozice}) ->
         vybor    = vybory[vybor_id]
         poslanec = poslanci[poslanec_id]
         new Pozice poslanec, klub, vybor
+    pozice .= filter -> it.klub?css == 'cssd'
     year_kluby_ids = {}
+    year_poslanci_ids = {}
     pozice.forEach (pozice)->
-        id = pozice.klub?id || \void
-        year_kluby_ids[id] ?= []
+        klub_id = pozice.klub?id || \void
+        year_kluby_ids[klub_id] ?= []
             ..push pozice
+        year_poslanci_ids[pozice.poslanec.id] ?= {poslanec: pozice.poslanec, pozice: [], klub: kluby[klub_id]}
+            ..pozice.push pozice
+
     year_kluby = for id, year_pozice of year_kluby_ids
         {klub: kluby[id], pozice:year_pozice}
+    year_poslanci = for id, year_poslanec of year_poslanci_ids
+        year_poslanec
     year_kluby.sort (a, b) ->
         a.klub?pozice - b.klub?pozice
 
-    new Year year, pozice, year_kluby
+    new Year year, pozice, year_kluby, year_poslanci
 
 new Barchart \#wrap years

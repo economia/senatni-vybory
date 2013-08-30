@@ -4,10 +4,11 @@
   Year = (function(){
     Year.displayName = 'Year';
     var prototype = Year.prototype, constructor = Year;
-    function Year(year, pozice, kluby){
+    function Year(year, pozice, kluby, poslanci){
       this.year = year;
       this.pozice = pozice;
       this.kluby = kluby;
+      this.poslanci = poslanci;
     }
     return Year;
   }());
@@ -75,7 +76,7 @@
       poslanci[id] = new Poslanec(id, poslanec_data);
     }
     years = data.years.map(function(arg$){
-      var year, pozice, year_kluby_ids, year_kluby, res$, id, year_pozice;
+      var year, pozice, year_kluby_ids, year_poslanci_ids, year_kluby, res$, id, year_pozice, year_poslanci, year_poslanec;
       year = arg$.year, pozice = arg$.pozice;
       pozice = pozice.map(function(arg$){
         var poslanec_id, vybor_id, klub_id, klub, vybor, poslanec;
@@ -85,15 +86,28 @@
         poslanec = poslanci[poslanec_id];
         return new Pozice(poslanec, klub, vybor);
       });
+      pozice = pozice.filter(function(it){
+        var ref$;
+        return ((ref$ = it.klub) != null ? ref$.css : void 8) === 'cssd';
+      });
       year_kluby_ids = {};
+      year_poslanci_ids = {};
       pozice.forEach(function(pozice){
-        var id, ref$, x$;
-        id = ((ref$ = pozice.klub) != null ? ref$.id : void 8) || 'void';
-        x$ = (ref$ = year_kluby_ids[id]) != null
+        var klub_id, ref$, x$, y$, key$;
+        klub_id = ((ref$ = pozice.klub) != null ? ref$.id : void 8) || 'void';
+        x$ = (ref$ = year_kluby_ids[klub_id]) != null
           ? ref$
-          : year_kluby_ids[id] = [];
+          : year_kluby_ids[klub_id] = [];
         x$.push(pozice);
-        return x$;
+        y$ = (ref$ = year_poslanci_ids[key$ = pozice.poslanec.id]) != null
+          ? ref$
+          : year_poslanci_ids[key$] = {
+            poslanec: pozice.poslanec,
+            pozice: [],
+            klub: kluby[klub_id]
+          };
+        y$.pozice.push(pozice);
+        return y$;
       });
       res$ = [];
       for (id in year_kluby_ids) {
@@ -104,11 +118,17 @@
         });
       }
       year_kluby = res$;
+      res$ = [];
+      for (id in year_poslanci_ids) {
+        year_poslanec = year_poslanci_ids[id];
+        res$.push(year_poslanec);
+      }
+      year_poslanci = res$;
       year_kluby.sort(function(a, b){
         var ref$;
         return ((ref$ = a.klub) != null ? ref$.pozice : void 8) - ((ref$ = b.klub) != null ? ref$.pozice : void 8);
       });
-      return new Year(year, pozice, year_kluby);
+      return new Year(year, pozice, year_kluby, year_poslanci);
     });
     return new Barchart('#wrap', years);
   });

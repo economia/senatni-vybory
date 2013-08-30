@@ -44,13 +44,14 @@
   };
   Bar = {
     barCreator: function(selection){
-      var currentHeight, bar, x$, this$ = this;
+      var currentHeight, item, bar, x$, this$ = this;
       currentHeight = 0;
+      item = 'poslanci';
       bar = selection.append('g').attr('transform', function(it){
         return "translate(" + this$.x(it.year) + ", 0)";
       }).attr('class', 'bar');
       x$ = bar.selectAll('.klub').data(function(it){
-        return it.kluby;
+        return it[item];
       }).enter().append('rect');
       x$.each(function(klub, index){
         if (index === 0) {
