@@ -23,6 +23,7 @@ Bar =
     barCreator: (selection) ->
         console.log @height
         selection.append \rect
+            ..attr \class \bar
             ..attr \width @x.rangeBand
             ..attr \height ~> @y it.pozice.length
             ..attr \x ~> @x it.year
@@ -41,7 +42,7 @@ window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar
             ..attr \class \content
             ..attr \transform "translate(#{@margin.left}, #{@margin.top})"
 
-        @bars = @content.selectAll \rect
+        @bars = @content.selectAll \.bar
             .data @data
             .enter!
             .call @~barCreator

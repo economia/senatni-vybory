@@ -47,6 +47,7 @@
       var x$, this$ = this;
       console.log(this.height);
       x$ = selection.append('rect');
+      x$.attr('class', 'bar');
       x$.attr('width', this.x.rangeBand);
       x$.attr('height', function(it){
         return this$.y(it.pozice.length);
@@ -81,7 +82,7 @@
       y$ = this.content = this.svg.append('g');
       y$.attr('class', 'content');
       y$.attr('transform', "translate(" + this.margin.left + ", " + this.margin.top + ")");
-      this.bars = this.content.selectAll('rect').data(this.data).enter().call(bind$(this, 'barCreator'));
+      this.bars = this.content.selectAll('.bar').data(this.data).enter().call(bind$(this, 'barCreator'));
       this.recomputeXScale();
     }
     return Barchart;
