@@ -1,5 +1,5 @@
 (function(){
-  var Dimensionable, XScale, Barchart;
+  var Dimensionable, XScale, Bar, Barchart;
   Dimensionable = {
     margin: {
       top: 0,
@@ -11,7 +11,7 @@
       this.fullWidth = fullWidth;
       this.fullHeight = fullHeight;
       this.width = this.fullWidth - this.margin.left - this.margin.right;
-      return this.height = this.fullWidth - this.margin.top - this.margin.bottom;
+      return this.height = this.fullHeight - this.margin.top - this.margin.bottom;
     }
   };
   XScale = {
@@ -27,11 +27,26 @@
       return x$;
     }
   };
+  Bar = {
+    barCreator: function(selection){
+      var x$, this$ = this;
+      console.log(this.height);
+      x$ = selection.append('rect');
+      x$.attr('width', this.x.rangeBand);
+      x$.attr('height', 50);
+      x$.attr('x', function(it){
+        return this$.x(it.year);
+      });
+      x$.attr('y', this.height - 50);
+      return x$;
+    }
+  };
   window.Barchart = Barchart = (function(){
     Barchart.displayName = 'Barchart';
     var prototype = Barchart.prototype, constructor = Barchart;
     importAll$(prototype, arguments[0]);
     importAll$(prototype, arguments[1]);
+    importAll$(prototype, arguments[2]);
     function Barchart(parentSelector, data){
       var x$, y$;
       this.parentSelector = parentSelector;
@@ -45,12 +60,16 @@
       y$ = this.content = this.svg.append('g');
       y$.attr('class', 'content');
       y$.attr('transform', "translate(" + this.margin.left + ", " + this.margin.top + ")");
+      this.bars = this.content.selectAll('rect').data(this.data).enter().call(bind$(this, 'barCreator'));
       this.recomputeXScale();
     }
     return Barchart;
-  }(Dimensionable, XScale));
+  }(Dimensionable, XScale, Bar));
   function importAll$(obj, src){
     for (var key in src) obj[key] = src[key];
     return obj;
+  }
+  function bind$(obj, key, target){
+    return function(){ return (target || obj)[key].apply(obj, arguments) };
   }
 }).call(this);

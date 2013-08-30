@@ -6,7 +6,7 @@ Dimensionable =
         left: 0
     computeDimensions: (@fullWidth, @fullHeight) ->
         @width = @fullWidth - @margin.left - @margin.right
-        @height = @fullWidth - @margin.top - @margin.bottom
+        @height = @fullHeight - @margin.top - @margin.bottom
 
 XScale =
     recomputeXScale: ->
@@ -14,8 +14,17 @@ XScale =
             ..rangeRoundBands [0 @width], 0.1
             ..domain @data.map (.year)
 
+Bar =
+    barCreator: (selection) ->
+        console.log @height
+        selection.append \rect
+            ..attr \width @x.rangeBand
+            ..attr \height 50
+            ..attr \x ~> @x it.year
+            ..attr \y @height - 50
 
-window.Barchart = class Barchart implements Dimensionable, XScale
+
+window.Barchart = class Barchart implements Dimensionable, XScale, Bar
     (@parentSelector, @data) ->
         @computeDimensions 650 600
         @recomputeXScale!
@@ -27,7 +36,10 @@ window.Barchart = class Barchart implements Dimensionable, XScale
             ..attr \class \content
             ..attr \transform "translate(#{@margin.left}, #{@margin.top})"
 
-
+        @bars = @content.selectAll \rect
+            .data @data
+            .enter!
+            .call @~barCreator
         @recomputeXScale!
 
 
