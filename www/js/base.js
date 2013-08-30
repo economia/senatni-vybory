@@ -1,5 +1,5 @@
 (function(){
-  var Year, Pozice, Klub, Poslanec, Vybor, kluby, vybory, poslanci, this$ = this;
+  var Year, Pozice, Klub, Poslanec, Vybor, Level, kluby, vybory, poslanci, this$ = this;
   new Tooltip().watchElements();
   Year = (function(){
     Year.displayName = 'Year';
@@ -57,11 +57,21 @@
     }
     return Vybor;
   }());
+  Level = (function(){
+    Level.displayName = 'Level';
+    var prototype = Level.prototype, constructor = Level;
+    function Level(type, id){
+      this.type = type;
+      this.id = id;
+      this.pozice = [];
+    }
+    return Level;
+  }());
   kluby = {};
   vybory = {};
   poslanci = {};
   d3.json("../data/data.json", function(err, data){
-    var id, ref$, nazev, poslanec_data, years, barchart;
+    var id, ref$, nazev, poslanec_data, years, x$, barchart;
     for (id in ref$ = data.kluby_ids) {
       nazev = ref$[id];
       kluby[id] = new Klub(id, nazev);
@@ -92,27 +102,21 @@
         klub_id = ((ref$ = pozice.klub) != null ? ref$.id : void 8) || 'void';
         x$ = (ref$ = year_kluby_ids[klub_id]) != null
           ? ref$
-          : year_kluby_ids[klub_id] = [];
-        x$.push(pozice);
+          : year_kluby_ids[klub_id] = new Level('kluby', klub_id);
+        x$.klub = kluby[klub_id];
+        x$.pozice.push(pozice);
         y$ = (ref$ = year_poslanci_ids[key$ = pozice.poslanec.id]) != null
           ? ref$
-          : year_poslanci_ids[key$] = {
-            poslanec: pozice.poslanec,
-            pozice: [],
-            klub: kluby[klub_id],
-            id: klub_id
-          };
+          : year_poslanci_ids[key$] = new Level('poslanci', pozice.poslanec.id);
+        y$.poslanec = pozice.poslanec;
+        y$.klub = kluby[klub_id];
         y$.pozice.push(pozice);
         return y$;
       });
       res$ = [];
       for (id in year_kluby_ids) {
         year_pozice = year_kluby_ids[id];
-        res$.push({
-          klub: kluby[id],
-          pozice: year_pozice,
-          id: id
-        });
+        res$.push(year_pozice);
       }
       year_kluby = res$;
       res$ = [];
@@ -130,9 +134,12 @@
       });
       return new Year(year, pozice, year_kluby, year_poslanci);
     });
-    barchart = new Barchart('#wrap', years);
+    x$ = barchart = new Barchart('#wrap', years);
+    x$.drawBars('kluby');
     return setTimeout(function(){
-      return barchart.filterData(function(year){
+      var x$;
+      x$ = barchart;
+      x$.filterData(function(year){
         year.klubyFull == null && (year.klubyFull = year.kluby);
         year.poslanciFull == null && (year.poslanciFull = year.poslanci);
         year.kluby = year.klubyFull.filter(function(level){
@@ -145,6 +152,10 @@
         });
         return true;
       });
-    }, 500);
+      x$.redraw('kluby');
+      return setTimeout(function(){
+        return barchart.redraw('poslanci');
+      }, 1400);
+    }, 100);
   });
 }).call(this);

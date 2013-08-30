@@ -17,7 +17,7 @@ YScale =
     recomputeYScale: ->
         lengths = @data.map ~>
             length = 0
-            it[@item].forEach (level) ->
+            it.kluby.forEach (level) ->
                 length += level.pozice.length
             length
         @y ?= d3.scale.linear!
@@ -25,12 +25,21 @@ YScale =
             ..range [0 @height]
 
 Bar =
-    drawBars: ->
+    drawBars: (item) ->
+        @lastItem = @item
+        @item = item
         @content.selectAll \.bar
             .data @data
             .enter!call @~barCreator
         @content.selectAll \.bar
             ..call @~drawLevels
+        if @lastItem and @lastItem != @item
+            @content.selectAll ".bar .#{@lastItem}"
+                ..transition!
+                    ..\attr \transform "scale(0, 1)"
+                    ..remove!
+
+
 
     barCreator: (selection) ->
         bar = selection.append \g
@@ -58,9 +67,9 @@ Level =
             ..call @~levelShaper
             ..attr \class (level) ~>
                 css = level.klub?css || "void"
-                "#{@item} klub-#{css}"
+                "#{level.type} klub-#{css}"
             ..attr \data-tooltip (level) ~>
-                if @item == \poslanci
+                if level.type == \poslanci
                     "#{level.poslanec.jmeno} #{level.poslanec.prijmeni}: #{level.pozice.length} pozic"
                 else
                     nazev = level.klub?nazev || "Nezařazení"
@@ -76,7 +85,7 @@ Level =
                 if index == 0 then currentHeight := 0
                 height = Math.round @y level.pozice.length
                 level.height = height
-                if @item == \poslanci then level.height -= 0.5
+                if level.type == \poslanci then level.height -= 0.5
                 currentHeight += height
                 level.offset = @height - currentHeight
             ..attr \height (.height)
@@ -99,7 +108,6 @@ Filter =
     filterData: (filterFunction) ->
         @dataFull ?= @data
         @data = @dataFull.filter filterFunction
-        @redraw!
 
 Transitions =
     transitionStepper: (step) ->
@@ -111,7 +119,6 @@ Transitions =
 
 window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, Level, Filter, Transitions
     (@parentSelector, @data) ->
-        @item = \kluby
         @computeDimensions 650 600
         @recomputeXScale!
         @recomputeYScale!
@@ -123,11 +130,8 @@ window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, 
             ..attr \class \content
             ..attr \transform "translate(#{@margin.left}, #{@margin.top})"
 
-        @drawBars!
-        @recomputeXScale!
-
     redraw: ->
         @recomputeYScale!
-        @drawBars!
+        @drawBars ...
 
 

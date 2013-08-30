@@ -22,6 +22,11 @@ class Poslanec
 
 class Vybor
     (@id, @nazev) ->
+
+class Level
+    (@type, @id) ->
+        @pozice = []
+
 kluby = {}
 vybory = {}
 poslanci = {}
@@ -45,13 +50,16 @@ years = data.years.map ({year, pozice}) ->
     year_poslanci_ids = {}
     pozice.forEach (pozice)->
         klub_id = pozice.klub?id || \void
-        year_kluby_ids[klub_id] ?= []
-            ..push pozice
-        year_poslanci_ids[pozice.poslanec.id] ?= {poslanec: pozice.poslanec, pozice: [], klub: kluby[klub_id], id: klub_id}
+        year_kluby_ids[klub_id] ?= new Level \kluby klub_id
+            ..klub = kluby[klub_id]
+            ..pozice.push pozice
+        year_poslanci_ids[pozice.poslanec.id] ?= new Level \poslanci pozice.poslanec.id
+            ..poslanec = pozice.poslanec
+            ..klub = kluby[klub_id]
             ..pozice.push pozice
 
     year_kluby = for id, year_pozice of year_kluby_ids
-        {klub: kluby[id], pozice:year_pozice, id}
+        year_pozice
     year_poslanci = for id, year_poslanec of year_poslanci_ids
         year_poslanec
     year_kluby.sort (a, b) ->
@@ -61,13 +69,17 @@ years = data.years.map ({year, pozice}) ->
     new Year year, pozice, year_kluby, year_poslanci
 
 barchart = new Barchart \#wrap years
-<~ setTimeout _, 500
-# barchart.item = \poslanci
-barchart.filterData (year) ->
-    year.klubyFull ?= year.kluby
-    year.poslanciFull ?= year.poslanci
-    year.kluby = year.klubyFull.filter (level) ->
-        level.klub?css == \cssd
-    year.poslanci = year.poslanciFull.filter (level) ->
-        level.klub?css == \cssd
-    true
+    ..drawBars \kluby
+<~ setTimeout _, 100
+barchart
+    ..filterData (year) ->
+        year.klubyFull ?= year.kluby
+        year.poslanciFull ?= year.poslanci
+        year.kluby = year.klubyFull.filter (level) ->
+            level.klub?css == \cssd
+        year.poslanci = year.poslanciFull.filter (level) ->
+            level.klub?css == \cssd
+        true
+    ..redraw \kluby
+<~ setTimeout _, 1400
+barchart.redraw \poslanci

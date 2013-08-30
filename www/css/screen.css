@@ -6,64 +6,86 @@ body {
 body .barchart {
   background: #fff;
 }
-body .barchart .bar .kluby {
+body .barchart .bar .kluby,
+body .barchart .bar .poslanci {
   fill: #ccc;
 }
-body .barchart .bar .kluby:hover {
+body .barchart .bar .kluby:hover,
+body .barchart .bar .poslanci:hover {
   opacity: 0.7;
   cursor: pointer;
 }
-body .barchart .bar .kluby.klub-cssd {
+body .barchart .bar .kluby.klub-cssd,
+body .barchart .bar .poslanci.klub-cssd {
   fill: #f29400;
 }
-body .barchart .bar .kluby.klub-ods {
+body .barchart .bar .kluby.klub-ods,
+body .barchart .bar .poslanci.klub-ods {
   fill: #006ab3;
 }
-body .barchart .bar .kluby.klub-kscm {
+body .barchart .bar .kluby.klub-kscm,
+body .barchart .bar .poslanci.klub-kscm {
   fill: #e3001a;
 }
-body .barchart .bar .kluby.klub-kdu-csl {
+body .barchart .bar .kluby.klub-kdu-csl,
+body .barchart .bar .poslanci.klub-kdu-csl {
   fill: #000;
 }
 body .barchart .bar .kluby.klub-us-deu,
-body .barchart .bar .kluby.klub-us {
+body .barchart .bar .poslanci.klub-us-deu,
+body .barchart .bar .kluby.klub-us,
+body .barchart .bar .poslanci.klub-us {
   fill: #015641;
 }
 body .barchart .bar .kluby.klub-sz,
-body .barchart .bar .kluby.klub-nez--sz {
+body .barchart .bar .poslanci.klub-sz,
+body .barchart .bar .kluby.klub-nez--sz,
+body .barchart .bar .poslanci.klub-nez--sz {
   fill: #00ad00;
 }
-body .barchart .bar .kluby.klub-vv {
+body .barchart .bar .kluby.klub-vv,
+body .barchart .bar .poslanci.klub-vv {
   fill: #84d0f1;
 }
-body .barchart .bar .kluby.klub-top09-s {
+body .barchart .bar .kluby.klub-top09-s,
+body .barchart .bar .poslanci.klub-top09-s {
   fill: #7c0042;
 }
-body .barchart .bar .kluby.klub-spr-rsc {
+body .barchart .bar .kluby.klub-spr-rsc,
+body .barchart .bar .poslanci.klub-spr-rsc {
   fill: #030181;
 }
-body .barchart .bar .kluby.klub-oda {
+body .barchart .bar .kluby.klub-oda,
+body .barchart .bar .poslanci.klub-oda {
   fill: #0089e6;
 }
-body .barchart .bar .kluby.klub-lb {
+body .barchart .bar .kluby.klub-lb,
+body .barchart .bar .poslanci.klub-lb {
   fill: #fb8072;
 }
-body .barchart .bar .kluby.klub-kds {
+body .barchart .bar .kluby.klub-kds,
+body .barchart .bar .poslanci.klub-kds {
   fill: #555;
 }
-body .barchart .bar .kluby.klub-hsd-sms {
+body .barchart .bar .kluby.klub-hsd-sms,
+body .barchart .bar .poslanci.klub-hsd-sms {
   fill: #fdfc02;
 }
-body .barchart .bar .kluby.klub-cmus {
+body .barchart .bar .kluby.klub-cmus,
+body .barchart .bar .poslanci.klub-cmus {
   fill: #0ff;
 }
-body .barchart .bar .kluby.klub-lsns {
+body .barchart .bar .kluby.klub-lsns,
+body .barchart .bar .poslanci.klub-lsns {
   fill: #00008b;
 }
-body .barchart .bar .kluby.klub-lsu {
+body .barchart .bar .kluby.klub-lsu,
+body .barchart .bar .poslanci.klub-lsu {
   fill: #3f3;
 }
 body .barchart .bar .kluby.klub-nezaraz,
-body .barchart .bar .kluby.klub-void {
+body .barchart .bar .poslanci.klub-nezaraz,
+body .barchart .bar .kluby.klub-void,
+body .barchart .bar .poslanci.klub-void {
   fill: #ccc;
 }
