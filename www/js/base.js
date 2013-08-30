@@ -135,7 +135,12 @@
       barchart.item = 'poslanci';
       return barchart.filterData(function(year){
         year.klubyFull == null && (year.klubyFull = year.kluby);
+        year.poslanciFull == null && (year.poslanciFull = year.poslanci);
         year.kluby = year.klubyFull.filter(function(level){
+          var ref$;
+          return ((ref$ = level.klub) != null ? ref$.css : void 8) === 'cssd';
+        });
+        year.poslanci = year.poslanciFull.filter(function(level){
           var ref$;
           return ((ref$ = level.klub) != null ? ref$.css : void 8) === 'cssd';
         });
