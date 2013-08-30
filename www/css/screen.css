@@ -6,64 +6,64 @@ body {
 body .barchart {
   background: #fff;
 }
-body .barchart .bar .klub {
+body .barchart .bar .kluby {
   fill: #ccc;
 }
-body .barchart .bar .klub:hover {
+body .barchart .bar .kluby:hover {
   opacity: 0.7;
   cursor: pointer;
 }
-body .barchart .bar .klub.klub-cssd {
+body .barchart .bar .kluby.klub-cssd {
   fill: #f29400;
 }
-body .barchart .bar .klub.klub-ods {
+body .barchart .bar .kluby.klub-ods {
   fill: #006ab3;
 }
-body .barchart .bar .klub.klub-kscm {
+body .barchart .bar .kluby.klub-kscm {
   fill: #e3001a;
 }
-body .barchart .bar .klub.klub-kdu-csl {
+body .barchart .bar .kluby.klub-kdu-csl {
   fill: #000;
 }
-body .barchart .bar .klub.klub-us-deu,
-body .barchart .bar .klub.klub-us {
+body .barchart .bar .kluby.klub-us-deu,
+body .barchart .bar .kluby.klub-us {
   fill: #015641;
 }
-body .barchart .bar .klub.klub-sz,
-body .barchart .bar .klub.klub-nez--sz {
+body .barchart .bar .kluby.klub-sz,
+body .barchart .bar .kluby.klub-nez--sz {
   fill: #00ad00;
 }
-body .barchart .bar .klub.klub-vv {
+body .barchart .bar .kluby.klub-vv {
   fill: #84d0f1;
 }
-body .barchart .bar .klub.klub-top09-s {
+body .barchart .bar .kluby.klub-top09-s {
   fill: #7c0042;
 }
-body .barchart .bar .klub.klub-spr-rsc {
+body .barchart .bar .kluby.klub-spr-rsc {
   fill: #030181;
 }
-body .barchart .bar .klub.klub-oda {
+body .barchart .bar .kluby.klub-oda {
   fill: #0089e6;
 }
-body .barchart .bar .klub.klub-lb {
+body .barchart .bar .kluby.klub-lb {
   fill: #fb8072;
 }
-body .barchart .bar .klub.klub-kds {
+body .barchart .bar .kluby.klub-kds {
   fill: #555;
 }
-body .barchart .bar .klub.klub-hsd-sms {
+body .barchart .bar .kluby.klub-hsd-sms {
   fill: #fdfc02;
 }
-body .barchart .bar .klub.klub-cmus {
+body .barchart .bar .kluby.klub-cmus {
   fill: #0ff;
 }
-body .barchart .bar .klub.klub-lsns {
+body .barchart .bar .kluby.klub-lsns {
   fill: #00008b;
 }
-body .barchart .bar .klub.klub-lsu {
+body .barchart .bar .kluby.klub-lsu {
   fill: #3f3;
 }
-body .barchart .bar .klub.klub-nezaraz,
-body .barchart .bar .klub.klub-void {
+body .barchart .bar .kluby.klub-nezaraz,
+body .barchart .bar .kluby.klub-void {
   fill: #ccc;
 }

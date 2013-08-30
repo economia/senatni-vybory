@@ -51,16 +51,8 @@
       return this.bars = this.content.selectAll('.bar').data(this.data).enter().call(bind$(this, 'barCreator'));
     },
     barCreator: function(selection){
-      var bar, klubSelection, x$, this$ = this;
-      bar = selection.append('g').call(bind$(this, 'barShaper'));
-      klubSelection = bar.selectAll('.klub').data(function(it){
-        return it[this$.item];
-      }, function(it){
-        return it.id;
-      });
-      x$ = klubSelection.enter();
-      x$.call(bind$(this, 'levelCreator'));
-      return x$;
+      var bar;
+      return bar = selection.append('g').call(bind$(this, 'barShaper')).call(bind$(this, 'drawLevels'));
     },
     barShaper: function(selection){
       var this$ = this;
@@ -70,6 +62,17 @@
     }
   };
   Level = {
+    drawLevels: function(bar){
+      var x$, this$ = this;
+      this.levels = bar.selectAll("." + this.item).data(function(it){
+        return it[this$.item];
+      }, function(it){
+        return it.id;
+      });
+      x$ = this.levels.enter();
+      x$.call(bind$(this, 'levelCreator'));
+      return x$;
+    },
     levelCreator: function(selection){
       var currentHeight, x$, this$ = this;
       currentHeight = 0;
@@ -90,7 +93,7 @@
       x$.attr('class', function(level){
         var css, ref$;
         css = ((ref$ = level.klub) != null ? ref$.css : void 8) || "void";
-        return "klub klub-" + css;
+        return this$.item + " klub-" + css;
       });
       x$.attr('data-tooltip', function(level){
         var nazev, ref$;

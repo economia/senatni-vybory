@@ -34,12 +34,7 @@ Bar =
     barCreator: (selection) ->
         bar = selection.append \g
             .call @~barShaper
-        klubSelection = bar.selectAll \.klub
-            .data do
-                ~> it[@item]
-                (.id)
-        klubSelection.enter!
-            ..call @~levelCreator
+            .call @~drawLevels
 
     barShaper: (selection) ->
         selection
@@ -47,6 +42,14 @@ Bar =
             .attr \class \bar
 
 Level =
+    drawLevels: (bar) ->
+        @levels = bar.selectAll ".#{@item}"
+            .data do
+                ~> it[@item]
+                (.id)
+        @levels.enter!
+            ..call @~levelCreator
+
     levelCreator: (selection) ->
         currentHeight = 0
         selection.append \rect
@@ -57,9 +60,9 @@ Level =
                 if @item == \poslanci then level.height -= 0.5
                 currentHeight += height
                 level.offset = @height - currentHeight
-            ..attr \class (level) ->
+            ..attr \class (level) ~>
                 css = level.klub?css || "void"
-                "klub klub-#{css}"
+                "#{@item} klub-#{css}"
             ..attr \data-tooltip (level) ~>
                 if @item == \poslanci
                     "#{level.poslanec.jmeno} #{level.poslanec.prijmeni}: #{level.pozice.length} pozic"
