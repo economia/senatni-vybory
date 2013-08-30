@@ -3,9 +3,10 @@
   Year = (function(){
     Year.displayName = 'Year';
     var prototype = Year.prototype, constructor = Year;
-    function Year(year, pozice){
+    function Year(year, pozice, kluby){
       this.year = year;
       this.pozice = pozice;
+      this.kluby = kluby;
     }
     return Year;
   }());
@@ -22,7 +23,8 @@
   Klub = (function(){
     Klub.displayName = 'Klub';
     var prototype = Klub.prototype, constructor = Klub;
-    function Klub(nazev){
+    function Klub(id, nazev){
+      this.id = id;
       this.nazev = nazev;
     }
     return Klub;
@@ -53,7 +55,7 @@
     console.log(data);
     for (id in ref$ = data.kluby_ids) {
       nazev = ref$[id];
-      kluby[id] = new Klub(nazev);
+      kluby[id] = new Klub(id, nazev);
     }
     for (id in ref$ = data.vybory_ids) {
       nazev = ref$[id];
@@ -64,7 +66,7 @@
       poslanci[id] = new Poslanec(id, poslanec_data);
     }
     years = data.years.map(function(arg$){
-      var year, pozice;
+      var year, pozice, year_kluby_ids, year_kluby, res$, id, year_pozice;
       year = arg$.year, pozice = arg$.pozice;
       pozice = pozice.map(function(arg$){
         var poslanec_id, vybor_id, klub_id, klub, vybor, poslanec;
@@ -74,7 +76,26 @@
         poslanec = poslanci[poslanec_id];
         return new Pozice(poslanec, klub, vybor);
       });
-      return new Year(year, pozice);
+      year_kluby_ids = {};
+      pozice.forEach(function(pozice){
+        var id, ref$, x$;
+        id = ((ref$ = pozice.klub) != null ? ref$.id : void 8) || 'void';
+        x$ = (ref$ = year_kluby_ids[id]) != null
+          ? ref$
+          : year_kluby_ids[id] = [];
+        x$.push(pozice);
+        return x$;
+      });
+      res$ = [];
+      for (id in year_kluby_ids) {
+        year_pozice = year_kluby_ids[id];
+        res$.push({
+          id: id,
+          pozice: year_pozice
+        });
+      }
+      year_kluby = res$;
+      return new Year(year, pozice, year_kluby);
     });
     return new Barchart('#wrap', years);
   });

@@ -1,11 +1,11 @@
 class Year
-    (@year, @pozice) ->
+    (@year, @pozice, @kluby) ->
 
 class Pozice
     (@poslanec, @klub, @vybor) ->
 
 class Klub
-    (@nazev) ->
+    (@id, @nazev) ->
 
 class Poslanec
     (@id, {@jmeno, @prijmeni}) ->
@@ -19,7 +19,7 @@ poslanci = {}
 (err, data) <~ d3.json "../data/data.json"
 console.log data
 for id, nazev of data.kluby_ids
-    kluby[id] = new Klub nazev
+    kluby[id] = new Klub id, nazev
 
 for id, nazev of data.vybory_ids
     vybory[id] = new Vybor id, nazev
@@ -33,6 +33,13 @@ years = data.years.map ({year, pozice}) ->
         vybor    = vybory[vybor_id]
         poslanec = poslanci[poslanec_id]
         new Pozice poslanec, klub, vybor
-    new Year year, pozice
+    year_kluby_ids = {}
+    pozice.forEach (pozice)->
+        id = pozice.klub?id || \void
+        year_kluby_ids[id] ?= []
+            ..push pozice
+    year_kluby = for id, year_pozice of year_kluby_ids
+        {id, pozice:year_pozice}
+    new Year year, pozice, year_kluby
 
 new Barchart \#wrap years
