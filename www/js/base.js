@@ -61,7 +61,7 @@
   vybory = {};
   poslanci = {};
   d3.json("../data/data.json", function(err, data){
-    var id, ref$, nazev, poslanec_data, years;
+    var id, ref$, nazev, poslanec_data, years, barchart;
     console.log(data);
     for (id in ref$ = data.kluby_ids) {
       nazev = ref$[id];
@@ -85,10 +85,6 @@
         vybor = vybory[vybor_id];
         poslanec = poslanci[poslanec_id];
         return new Pozice(poslanec, klub, vybor);
-      });
-      pozice = pozice.filter(function(it){
-        var ref$;
-        return ((ref$ = it.klub) != null ? ref$.css : void 8) === 'cssd';
       });
       year_kluby_ids = {};
       year_poslanci_ids = {};
@@ -133,6 +129,16 @@
       });
       return new Year(year, pozice, year_kluby, year_poslanci);
     });
-    return new Barchart('#wrap', years);
+    barchart = new Barchart('#wrap', years);
+    return setTimeout(function(){
+      return barchart.filterData(function(year){
+        year.klubyFull == null && (year.klubyFull = year.kluby);
+        year.kluby = year.kluby.filter(function(level){
+          var ref$;
+          return ((ref$ = level.klub) != null ? ref$.css : void 8) === 'cssd';
+        });
+        return true;
+      });
+    }, 500);
   });
 }).call(this);

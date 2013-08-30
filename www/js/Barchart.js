@@ -1,5 +1,5 @@
 (function(){
-  var Dimensionable, XScale, YScale, Bar, Barchart;
+  var Dimensionable, XScale, YScale, Bar, Filter, Barchart;
   Dimensionable = {
     margin: {
       top: 0,
@@ -29,47 +29,59 @@
   };
   YScale = {
     recomputeYScale: function(){
-      var x$, ref$;
+      var lengths, x$, ref$, this$ = this;
+      lengths = this.data.map(function(it){
+        var length;
+        length = 0;
+        it[this$.item].forEach(function(level){
+          return length += level.pozice.length;
+        });
+        return length;
+      });
       x$ = (ref$ = this.y) != null
         ? ref$
         : this.y = d3.scale.linear();
-      x$.domain([
-        0, Math.max.apply(Math, this.data.map(function(it){
-          return it.pozice.length;
-        }))
-      ]);
+      x$.domain([0, Math.max.apply(Math, lengths)]);
       x$.range([0, this.height]);
       return x$;
     }
   };
   Bar = {
     barCreator: function(selection){
-      var currentHeight, item, bar, x$, this$ = this;
+      var currentHeight, bar, x$, this$ = this;
       currentHeight = 0;
-      item = 'poslanci';
       bar = selection.append('g').attr('transform', function(it){
         return "translate(" + this$.x(it.year) + ", 0)";
       }).attr('class', 'bar');
       x$ = bar.selectAll('.klub').data(function(it){
-        return it[item];
+        return it[this$.item];
       }).enter().append('rect');
-      x$.each(function(klub, index){
+      x$.each(function(level, index){
+        var height;
         if (index === 0) {
           currentHeight = 0;
         }
-        klub.height = Math.round(this$.y(klub.pozice.length));
-        currentHeight += klub.height;
-        return klub.offset = this$.height - currentHeight;
+        height = Math.round(this$.y(level.pozice.length));
+        level.height = height;
+        if (this$.item === 'poslanci') {
+          level.height -= 0.5;
+        }
+        currentHeight += height;
+        return level.offset = this$.height - currentHeight;
       });
-      x$.attr('class', function(klub){
+      x$.attr('class', function(level){
         var css, ref$;
-        css = ((ref$ = klub.klub) != null ? ref$.css : void 8) || "void";
+        css = ((ref$ = level.klub) != null ? ref$.css : void 8) || "void";
         return "klub klub-" + css;
       });
-      x$.attr('data-tooltip', function(klub){
+      x$.attr('data-tooltip', function(level){
         var nazev, ref$;
-        nazev = ((ref$ = klub.klub) != null ? ref$.nazev : void 8) || "Nezařazení";
-        return nazev + ": " + klub.pozice.length + " pozic";
+        if (this$.item === 'poslanci') {
+          return level.poslanec.jmeno + " " + level.poslanec.prijmeni + ": " + level.pozice.length + " pozic";
+        } else {
+          nazev = ((ref$ = level.klub) != null ? ref$.nazev : void 8) || "Nezařazení";
+          return nazev + ": " + level.pozice.length + " pozic";
+        }
       });
       x$.attr('width', this.x.rangeBand);
       x$.attr('height', function(it){
@@ -82,6 +94,14 @@
       return x$;
     }
   };
+  Filter = {
+    filterData: function(filterFunction){
+      this.dataFull == null && (this.dataFull = this.data);
+      this.data = this.dataFull;
+      this.data = this.data.filter(filterFunction);
+      return this.redraw();
+    }
+  };
   window.Barchart = Barchart = (function(){
     Barchart.displayName = 'Barchart';
     var prototype = Barchart.prototype, constructor = Barchart;
@@ -89,10 +109,12 @@
     importAll$(prototype, arguments[1]);
     importAll$(prototype, arguments[2]);
     importAll$(prototype, arguments[3]);
+    importAll$(prototype, arguments[4]);
     function Barchart(parentSelector, data){
       var x$, y$;
       this.parentSelector = parentSelector;
       this.data = data;
+      this.item = 'kluby';
       this.computeDimensions(650, 600);
       this.recomputeXScale();
       this.recomputeYScale();
@@ -106,8 +128,14 @@
       this.bars = this.content.selectAll('.bar').data(this.data).enter().call(bind$(this, 'barCreator'));
       this.recomputeXScale();
     }
+    prototype.redraw = function(){
+      console.log(this.y.domain());
+      this.recomputeYScale();
+      console.log(this.y.domain());
+      return console.log(this.data);
+    };
     return Barchart;
-  }(Dimensionable, XScale, YScale, Bar));
+  }(Dimensionable, XScale, YScale, Bar, Filter));
   function importAll$(obj, src){
     for (var key in src) obj[key] = src[key];
     return obj;

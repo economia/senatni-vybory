@@ -15,39 +15,55 @@ XScale =
             ..domain @data.map (.year)
 YScale =
     recomputeYScale: ->
+        lengths = @data.map ~>
+            length = 0
+            it[@item].forEach (level) ->
+                length += level.pozice.length
+            length
         @y ?= d3.scale.linear!
-            ..domain [0, Math.max ...@data.map (.pozice.length)]
+            ..domain [0, Math.max ...lengths]
             ..range [0 @height]
 
 Bar =
     barCreator: (selection) ->
         currentHeight = 0
-        item = \poslanci
         bar = selection.append \g
             .attr \transform ~> "translate(#{@x it.year}, 0)"
             .attr \class \bar
         bar.selectAll \.klub
-            .data -> it[item]
+            .data ~> it[@item]
             .enter!
             .append \rect
-                ..each (klub, index) ~>
+                ..each (level, index) ~>
                     if index == 0 then currentHeight := 0
-                    klub.height = Math.round @y klub.pozice.length
-                    currentHeight += klub.height
-                    klub.offset = @height - currentHeight
-                ..attr \class (klub) ->
-                    css = klub.klub?css || "void"
+                    height = Math.round @y level.pozice.length
+                    level.height = height
+                    if @item == \poslanci then level.height -= 0.5
+                    currentHeight += height
+                    level.offset = @height - currentHeight
+                ..attr \class (level) ->
+                    css = level.klub?css || "void"
                     "klub klub-#{css}"
-                ..attr \data-tooltip (klub) ->
-                    nazev = klub.klub?nazev || "Nezařazení"
-                    "#{nazev}: #{klub.pozice.length} pozic"
+                ..attr \data-tooltip (level) ~>
+                    if @item == \poslanci
+                        "#{level.poslanec.jmeno} #{level.poslanec.prijmeni}: #{level.pozice.length} pozic"
+                    else
+                        nazev = level.klub?nazev || "Nezařazení"
+                        "#{nazev}: #{level.pozice.length} pozic"
                 ..attr \width @x.rangeBand
                 ..attr \height (.height)
                 ..attr \x \0
                 ..attr \y (.offset)
+Filter =
+    filterData: (filterFunction) ->
+        @dataFull ?= @data
+        @data = @dataFull
+        @data .= filter filterFunction
+        @redraw!
 
-window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar
+window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, Filter
     (@parentSelector, @data) ->
+        @item = \kluby
         @computeDimensions 650 600
         @recomputeXScale!
         @recomputeYScale!
@@ -64,5 +80,11 @@ window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar
             .enter!
             .call @~barCreator
         @recomputeXScale!
+
+    redraw: ->
+        console.log @y.domain!
+        @recomputeYScale!
+        console.log @y.domain!
+        console.log @data
 
 

@@ -42,7 +42,6 @@ years = data.years.map ({year, pozice}) ->
         vybor    = vybory[vybor_id]
         poslanec = poslanci[poslanec_id]
         new Pozice poslanec, klub, vybor
-    pozice .= filter -> it.klub?css == 'cssd'
     year_kluby_ids = {}
     year_poslanci_ids = {}
     pozice.forEach (pozice)->
@@ -62,4 +61,11 @@ years = data.years.map ({year, pozice}) ->
 
     new Year year, pozice, year_kluby, year_poslanci
 
-new Barchart \#wrap years
+barchart = new Barchart \#wrap years
+<~ setTimeout _, 500
+barchart.item = \poslanci
+barchart.filterData (year) ->
+    year.klubyFull ?= year.kluby
+    year.kluby .= filter (level) ->
+        level.klub?css == \cssd
+    true
