@@ -1,5 +1,5 @@
 (function(){
-  var Dimensionable, XScale, Bar, Barchart;
+  var Dimensionable, XScale, YScale, Bar, Barchart;
   Dimensionable = {
     margin: {
       top: 0,
@@ -27,6 +27,21 @@
       return x$;
     }
   };
+  YScale = {
+    recomputeYScale: function(){
+      var x$, ref$;
+      x$ = (ref$ = this.y) != null
+        ? ref$
+        : this.y = d3.scale.linear();
+      x$.domain([
+        0, Math.max.apply(Math, this.data.map(function(it){
+          return it.pozice.length;
+        }))
+      ]);
+      x$.range([0, this.height]);
+      return x$;
+    }
+  };
   Bar = {
     barCreator: function(selection){
       var x$, this$ = this;
@@ -47,12 +62,14 @@
     importAll$(prototype, arguments[0]);
     importAll$(prototype, arguments[1]);
     importAll$(prototype, arguments[2]);
+    importAll$(prototype, arguments[3]);
     function Barchart(parentSelector, data){
       var x$, y$;
       this.parentSelector = parentSelector;
       this.data = data;
       this.computeDimensions(650, 600);
       this.recomputeXScale();
+      this.recomputeYScale();
       x$ = this.svg = d3.selectAll(this.parentSelector).append('svg');
       x$.attr('class', 'barchart');
       x$.attr('width', this.fullWidth);
@@ -64,7 +81,7 @@
       this.recomputeXScale();
     }
     return Barchart;
-  }(Dimensionable, XScale, Bar));
+  }(Dimensionable, XScale, YScale, Bar));
   function importAll$(obj, src){
     for (var key in src) obj[key] = src[key];
     return obj;

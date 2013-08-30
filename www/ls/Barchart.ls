@@ -13,6 +13,11 @@ XScale =
         @x ?= d3.scale.ordinal!
             ..rangeRoundBands [0 @width], 0.1
             ..domain @data.map (.year)
+YScale =
+    recomputeYScale: ->
+        @y ?= d3.scale.linear!
+            ..domain [0, Math.max ...@data.map (.pozice.length)]
+            ..range [0 @height]
 
 Bar =
     barCreator: (selection) ->
@@ -24,10 +29,11 @@ Bar =
             ..attr \y @height - 50
 
 
-window.Barchart = class Barchart implements Dimensionable, XScale, Bar
+window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar
     (@parentSelector, @data) ->
         @computeDimensions 650 600
         @recomputeXScale!
+        @recomputeYScale!
         @svg = d3.selectAll @parentSelector .append \svg
             ..attr \class \barchart
             ..attr \width @fullWidth
