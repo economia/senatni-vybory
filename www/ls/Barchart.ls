@@ -22,10 +22,10 @@ YScale =
 Bar =
     barCreator: (selection) ->
         currentHeight = 0
-        selection.append \g
+        bar = selection.append \g
             .attr \transform ~> "translate(#{@x it.year}, 0)"
             .attr \class \bar
-            .selectAll \.pozice
+        bar.selectAll \.klub
             .data (.kluby)
             .enter!
             .append \rect

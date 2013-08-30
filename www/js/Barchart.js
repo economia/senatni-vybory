@@ -44,11 +44,12 @@
   };
   Bar = {
     barCreator: function(selection){
-      var currentHeight, x$, this$ = this;
+      var currentHeight, bar, x$, this$ = this;
       currentHeight = 0;
-      x$ = selection.append('g').attr('transform', function(it){
+      bar = selection.append('g').attr('transform', function(it){
         return "translate(" + this$.x(it.year) + ", 0)";
-      }).attr('class', 'bar').selectAll('.pozice').data(function(it){
+      }).attr('class', 'bar');
+      x$ = bar.selectAll('.klub').data(function(it){
         return it.kluby;
       }).enter().append('rect');
       x$.each(function(klub, index){
