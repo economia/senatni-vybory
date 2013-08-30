@@ -44,19 +44,19 @@
   };
   Bar = {
     barCreator: function(selection){
-      var x$, this$ = this;
-      console.log(this.height);
-      x$ = selection.append('rect');
-      x$.attr('class', 'bar');
+      var unitHeight, x$, this$ = this;
+      unitHeight = this.y(1);
+      x$ = selection.append('g').attr('transform', function(it){
+        return "translate(" + this$.x(it.year) + ", 0)";
+      }).attr('class', 'bar').selectAll('.pozice').data(function(it){
+        return it.pozice;
+      }).enter().append('rect');
+      x$.attr('class', 'pozice');
       x$.attr('width', this.x.rangeBand);
-      x$.attr('height', function(it){
-        return this$.y(it.pozice.length);
-      });
-      x$.attr('x', function(it){
-        return this$.x(it.year);
-      });
-      x$.attr('y', function(it){
-        return this$.height - this$.y(it.pozice.length);
+      x$.attr('height', unitHeight);
+      x$.attr('x', '0');
+      x$.attr('y', function(pozice, index){
+        return this$.height - index * unitHeight;
       });
       return x$;
     }

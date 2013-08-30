@@ -21,13 +21,20 @@ YScale =
 
 Bar =
     barCreator: (selection) ->
-        console.log @height
-        selection.append \rect
-            ..attr \class \bar
-            ..attr \width @x.rangeBand
-            ..attr \height ~> @y it.pozice.length
-            ..attr \x ~> @x it.year
-            ..attr \y ~> @height - @y it.pozice.length
+        unitHeight = @y 1
+        selection.append \g
+            .attr \transform ~> "translate(#{@x it.year}, 0)"
+            .attr \class \bar
+            .selectAll \.pozice
+            .data (.pozice)
+            .enter!
+            .append \rect
+                ..attr \class \pozice
+                ..attr \width @x.rangeBand
+                ..attr \height unitHeight
+                ..attr \x \0
+                ..attr \y (pozice, index) ~>
+                    @height - index * unitHeight
 
 window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar
     (@parentSelector, @data) ->
