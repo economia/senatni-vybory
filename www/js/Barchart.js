@@ -139,8 +139,7 @@
     prototype.redraw = function(){
       console.log(this.y.domain());
       this.recomputeYScale();
-      console.log(this.y.domain());
-      return console.log(this.data);
+      return console.log(this.y.domain());
     };
     return Barchart;
   }(Dimensionable, XScale, YScale, Bar, Level, Filter));

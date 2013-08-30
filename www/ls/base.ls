@@ -26,7 +26,6 @@ kluby = {}
 vybory = {}
 poslanci = {}
 (err, data) <~ d3.json "../data/data.json"
-console.log data
 for id, nazev of data.kluby_ids
     kluby[id] = new Klub id, nazev
 

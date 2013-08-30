@@ -91,6 +91,5 @@ window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, 
         console.log @y.domain!
         @recomputeYScale!
         console.log @y.domain!
-        console.log @data
 
 

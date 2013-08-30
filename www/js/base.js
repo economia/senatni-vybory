@@ -62,7 +62,6 @@
   poslanci = {};
   d3.json("../data/data.json", function(err, data){
     var id, ref$, nazev, poslanec_data, years, barchart;
-    console.log(data);
     for (id in ref$ = data.kluby_ids) {
       nazev = ref$[id];
       kluby[id] = new Klub(id, nazev);
