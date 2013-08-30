@@ -48,6 +48,7 @@ Level =
                 ~> it[@item]
                 (.id)
         @levels
+            ..call @~levelUpdater
             ..enter!call @~levelCreator
             ..exit!call @~levelDestroyer
 
@@ -81,6 +82,12 @@ Level =
             ..attr \height (.height)
             ..attr \y (.offset)
 
+    levelUpdater: (selection) ->
+        selection.transition!
+            ..call @transitionStepper 1
+            ..call @~levelShaper
+
+
     levelDestroyer: (selection) ->
         selection.transition!
             ..call @transitionStepper 0
@@ -97,9 +104,10 @@ Filter =
 Transitions =
     transitionStepper: (step) ->
         (transition) ->
+            delay = Math.max 0, step * 800 - 200
             transition
                 ..duration 800
-                ..delay step * 800 - 150
+                ..delay delay
 
 window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, Level, Filter, Transitions
     (@parentSelector, @data) ->

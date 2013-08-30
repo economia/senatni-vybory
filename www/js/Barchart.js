@@ -76,6 +76,7 @@
         return it.id;
       });
       x$ = this.levels;
+      x$.call(bind$(this, 'levelUpdater'));
       x$.enter().call(bind$(this, 'levelCreator'));
       x$.exit().call(bind$(this, 'levelDestroyer'));
       return x$;
@@ -128,6 +129,13 @@
       });
       return x$;
     },
+    levelUpdater: function(selection){
+      var x$;
+      x$ = selection.transition();
+      x$.call(this.transitionStepper(1));
+      x$.call(bind$(this, 'levelShaper'));
+      return x$;
+    },
     levelDestroyer: function(selection){
       var x$;
       x$ = selection.transition();
@@ -147,10 +155,11 @@
   Transitions = {
     transitionStepper: function(step){
       return function(transition){
-        var x$;
+        var delay, x$;
+        delay = Math.max(0, step * 800 - 200);
         x$ = transition;
         x$.duration(800);
-        x$.delay(step * 800 - 150);
+        x$.delay(delay);
         return x$;
       };
     }
