@@ -23,9 +23,11 @@
   Klub = (function(){
     Klub.displayName = 'Klub';
     var prototype = Klub.prototype, constructor = Klub;
-    function Klub(id, nazev){
+    function Klub(id, nazev, $class){
       this.id = id;
       this.nazev = nazev;
+      this['class'] = $class;
+      this.css = this.nazev.toLowerCase().replace('č', 'c').replace('ř', 'r').replace(/[^-0-9a-z]/g, '-');
     }
     return Klub;
   }());
@@ -90,7 +92,7 @@
       for (id in year_kluby_ids) {
         year_pozice = year_kluby_ids[id];
         res$.push({
-          id: id,
+          klub: kluby[id],
           pozice: year_pozice
         });
       }

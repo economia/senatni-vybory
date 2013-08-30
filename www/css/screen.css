@@ -6,3 +6,60 @@ body {
 body .barchart {
   background: #fff;
 }
+body .barchart .bar .klub {
+  fill: #ccc;
+}
+body .barchart .bar .klub.klub-cssd {
+  fill: #f29400;
+}
+body .barchart .bar .klub.klub-ods {
+  fill: #006ab3;
+}
+body .barchart .bar .klub.klub-kscm {
+  fill: #e3001a;
+}
+body .barchart .bar .klub.klub-kdu-csl {
+  fill: #000;
+}
+body .barchart .bar .klub.klub-us-deu,
+body .barchart .bar .klub.klub-us {
+  fill: #015641;
+}
+body .barchart .bar .klub.klub-sz,
+body .barchart .bar .klub.klub-nez--sz {
+  fill: #00ad00;
+}
+body .barchart .bar .klub.klub-vv {
+  fill: #84d0f1;
+}
+body .barchart .bar .klub.klub-top09-s {
+  fill: #7c0042;
+}
+body .barchart .bar .klub.klub-spr-rsc {
+  fill: #030181;
+}
+body .barchart .bar .klub.klub-oda {
+  fill: #0089e6;
+}
+body .barchart .bar .klub.klub-lb {
+  fill: #fb8072;
+}
+body .barchart .bar .klub.klub-kds {
+  fill: #555;
+}
+body .barchart .bar .klub.klub-hsd-sms {
+  fill: #fdfc02;
+}
+body .barchart .bar .klub.klub-cmus {
+  fill: #0ff;
+}
+body .barchart .bar .klub.klub-lsns {
+  fill: #00008b;
+}
+body .barchart .bar .klub.klub-lsu {
+  fill: #3f3;
+}
+body .barchart .bar .klub.klub-nezaraz,
+body .barchart .bar .klub.klub-void {
+  fill: #ccc;
+}

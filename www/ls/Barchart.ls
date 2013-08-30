@@ -34,7 +34,9 @@ Bar =
                     klub.height = Math.round @y klub.pozice.length
                     currentHeight += klub.height
                     klub.offset = @height - currentHeight
-                ..attr \class \klub
+                ..attr \class (klub) ->
+                    css = klub.klub?css || "void"
+                    "klub klub-#{css}"
                 ..attr \width @x.rangeBand
                 ..attr \height (.height)
                 ..attr \x \0

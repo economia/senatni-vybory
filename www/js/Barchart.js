@@ -59,7 +59,11 @@
         currentHeight += klub.height;
         return klub.offset = this$.height - currentHeight;
       });
-      x$.attr('class', 'klub');
+      x$.attr('class', function(klub){
+        var css, ref$;
+        css = ((ref$ = klub.klub) != null ? ref$.css : void 8) || "void";
+        return "klub klub-" + css;
+      });
       x$.attr('width', this.x.rangeBand);
       x$.attr('height', function(it){
         return it.height;

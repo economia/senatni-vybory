@@ -5,14 +5,17 @@ class Pozice
     (@poslanec, @klub, @vybor) ->
 
 class Klub
-    (@id, @nazev) ->
+    (@id, @nazev, @class) ->
+        @css = @nazev.toLowerCase!
+            .replace \č \c
+            .replace \ř \r
+            .replace /[^-0-9a-z]/g '-'
 
 class Poslanec
     (@id, {@jmeno, @prijmeni}) ->
 
 class Vybor
     (@id, @nazev) ->
-
 kluby = {}
 vybory = {}
 poslanci = {}
@@ -39,7 +42,7 @@ years = data.years.map ({year, pozice}) ->
         year_kluby_ids[id] ?= []
             ..push pozice
     year_kluby = for id, year_pozice of year_kluby_ids
-        {id, pozice:year_pozice}
+        {klub: kluby[id], pozice:year_pozice}
     new Year year, pozice, year_kluby
 
 new Barchart \#wrap years
