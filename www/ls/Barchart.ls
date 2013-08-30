@@ -25,16 +25,26 @@ YScale =
             ..range [0 @height]
 
 Bar =
+    drawBars: ->
+        @bars = @content.selectAll \.bar
+            .data @data
+            .enter!
+            .call @~barCreator
+
     barCreator: (selection) ->
         bar = selection.append \g
-            .attr \transform ~> "translate(#{@x it.year}, 0)"
-            .attr \class \bar
-        bar.selectAll \.klub
+            .call @~barShaper
+        klubSelection = bar.selectAll \.klub
             .data do
                 ~> it[@item]
                 (.id)
-            .enter!
-            .call @~levelCreator
+        klubSelection.enter!
+            ..call @~levelCreator
+
+    barShaper: (selection) ->
+        selection
+            .attr \transform ~> "translate(#{@x it.year}, 0)"
+            .attr \class \bar
 
 Level =
     levelCreator: (selection) ->
@@ -81,10 +91,7 @@ window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, 
             ..attr \class \content
             ..attr \transform "translate(#{@margin.left}, #{@margin.top})"
 
-        @bars = @content.selectAll \.bar
-            .data @data
-            .enter!
-            .call @~barCreator
+        @drawBars!
         @recomputeXScale!
 
     redraw: ->

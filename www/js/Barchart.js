@@ -47,16 +47,26 @@
     }
   };
   Bar = {
+    drawBars: function(){
+      return this.bars = this.content.selectAll('.bar').data(this.data).enter().call(bind$(this, 'barCreator'));
+    },
     barCreator: function(selection){
-      var bar, this$ = this;
-      bar = selection.append('g').attr('transform', function(it){
-        return "translate(" + this$.x(it.year) + ", 0)";
-      }).attr('class', 'bar');
-      return bar.selectAll('.klub').data(function(it){
+      var bar, klubSelection, x$, this$ = this;
+      bar = selection.append('g').call(bind$(this, 'barShaper'));
+      klubSelection = bar.selectAll('.klub').data(function(it){
         return it[this$.item];
       }, function(it){
         return it.id;
-      }).enter().call(bind$(this, 'levelCreator'));
+      });
+      x$ = klubSelection.enter();
+      x$.call(bind$(this, 'levelCreator'));
+      return x$;
+    },
+    barShaper: function(selection){
+      var this$ = this;
+      return selection.attr('transform', function(it){
+        return "translate(" + this$.x(it.year) + ", 0)";
+      }).attr('class', 'bar');
     }
   };
   Level = {
@@ -133,7 +143,7 @@
       y$ = this.content = this.svg.append('g');
       y$.attr('class', 'content');
       y$.attr('transform', "translate(" + this.margin.left + ", " + this.margin.top + ")");
-      this.bars = this.content.selectAll('.bar').data(this.data).enter().call(bind$(this, 'barCreator'));
+      this.drawBars();
       this.recomputeXScale();
     }
     prototype.redraw = function(){
