@@ -132,7 +132,6 @@
     });
     barchart = new Barchart('#wrap', years);
     return setTimeout(function(){
-      barchart.item = 'poslanci';
       return barchart.filterData(function(year){
         year.klubyFull == null && (year.klubyFull = year.kluby);
         year.poslanciFull == null && (year.poslanciFull = year.poslanci);

@@ -26,15 +26,15 @@ YScale =
 
 Bar =
     drawBars: ->
-        @bars = @content.selectAll \.bar
+        @content.selectAll \.bar
             .data @data
-            .enter!
-            .call @~barCreator
+            .enter!call @~barCreator
+        @content.selectAll \.bar
+            ..call @~drawLevels
 
     barCreator: (selection) ->
         bar = selection.append \g
-            .call @~barShaper
-            .call @~drawLevels
+            ..call @~barShaper
 
     barShaper: (selection) ->
         selection
@@ -47,8 +47,9 @@ Level =
             .data do
                 ~> it[@item]
                 (.id)
-        @levels.enter!
-            ..call @~levelCreator
+        @levels
+            ..enter!call @~levelCreator
+            ..exit!call @~levelDestroyer
 
     levelCreator: (selection) ->
         currentHeight = 0
@@ -73,6 +74,12 @@ Level =
             ..attr \height (.height)
             ..attr \x \0
             ..attr \y (.offset)
+    levelDestroyer: (selection) ->
+        selection.transition!
+            ..call @transitionStepper 0
+            ..\attr \transform "scale(0, 1)"
+            ..remove!
+
 
 Filter =
     filterData: (filterFunction) ->
@@ -80,7 +87,14 @@ Filter =
         @data = @dataFull.filter filterFunction
         @redraw!
 
-window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, Level, Filter
+Transitions =
+    transitionStepper: (step) ->
+        (transition) ->
+            transition
+                ..duration 800
+                ..delay step * 800 - 150
+
+window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, Level, Filter, Transitions
     (@parentSelector, @data) ->
         @item = \kluby
         @computeDimensions 650 600
@@ -98,8 +112,7 @@ window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, 
         @recomputeXScale!
 
     redraw: ->
-        console.log @y.domain!
         @recomputeYScale!
-        console.log @y.domain!
+        @drawBars!
 
 

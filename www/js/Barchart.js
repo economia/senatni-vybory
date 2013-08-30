@@ -1,5 +1,5 @@
 (function(){
-  var Dimensionable, XScale, YScale, Bar, Level, Filter, Barchart;
+  var Dimensionable, XScale, YScale, Bar, Level, Filter, Transitions, Barchart;
   Dimensionable = {
     margin: {
       top: 0,
@@ -48,11 +48,17 @@
   };
   Bar = {
     drawBars: function(){
-      return this.bars = this.content.selectAll('.bar').data(this.data).enter().call(bind$(this, 'barCreator'));
+      var x$;
+      this.content.selectAll('.bar').data(this.data).enter().call(bind$(this, 'barCreator'));
+      x$ = this.content.selectAll('.bar');
+      x$.call(bind$(this, 'drawLevels'));
+      return x$;
     },
     barCreator: function(selection){
-      var bar;
-      return bar = selection.append('g').call(bind$(this, 'barShaper')).call(bind$(this, 'drawLevels'));
+      var x$, bar;
+      x$ = bar = selection.append('g');
+      x$.call(bind$(this, 'barShaper'));
+      return x$;
     },
     barShaper: function(selection){
       var this$ = this;
@@ -69,8 +75,9 @@
       }, function(it){
         return it.id;
       });
-      x$ = this.levels.enter();
-      x$.call(bind$(this, 'levelCreator'));
+      x$ = this.levels;
+      x$.enter().call(bind$(this, 'levelCreator'));
+      x$.exit().call(bind$(this, 'levelDestroyer'));
       return x$;
     },
     levelCreator: function(selection){
@@ -113,6 +120,14 @@
         return it.offset;
       });
       return x$;
+    },
+    levelDestroyer: function(selection){
+      var x$;
+      x$ = selection.transition();
+      x$.call(this.transitionStepper(0));
+      x$['attr']('transform', "scale(0, 1)");
+      x$.remove();
+      return x$;
     }
   };
   Filter = {
@@ -120,6 +135,17 @@
       this.dataFull == null && (this.dataFull = this.data);
       this.data = this.dataFull.filter(filterFunction);
       return this.redraw();
+    }
+  };
+  Transitions = {
+    transitionStepper: function(step){
+      return function(transition){
+        var x$;
+        x$ = transition;
+        x$.duration(800);
+        x$.delay(step * 800 - 150);
+        return x$;
+      };
     }
   };
   window.Barchart = Barchart = (function(){
@@ -131,6 +157,7 @@
     importAll$(prototype, arguments[3]);
     importAll$(prototype, arguments[4]);
     importAll$(prototype, arguments[5]);
+    importAll$(prototype, arguments[6]);
     function Barchart(parentSelector, data){
       var x$, y$;
       this.parentSelector = parentSelector;
@@ -150,12 +177,11 @@
       this.recomputeXScale();
     }
     prototype.redraw = function(){
-      console.log(this.y.domain());
       this.recomputeYScale();
-      return console.log(this.y.domain());
+      return this.drawBars();
     };
     return Barchart;
-  }(Dimensionable, XScale, YScale, Bar, Level, Filter));
+  }(Dimensionable, XScale, YScale, Bar, Level, Filter, Transitions));
   function bind$(obj, key, target){
     return function(){ return (target || obj)[key].apply(obj, arguments) };
   }

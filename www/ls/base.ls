@@ -62,7 +62,7 @@ years = data.years.map ({year, pozice}) ->
 
 barchart = new Barchart \#wrap years
 <~ setTimeout _, 500
-barchart.item = \poslanci
+# barchart.item = \poslanci
 barchart.filterData (year) ->
     year.klubyFull ?= year.kluby
     year.poslanciFull ?= year.poslanci
