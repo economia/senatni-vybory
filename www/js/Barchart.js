@@ -54,6 +54,8 @@
       }).attr('class', 'bar');
       return bar.selectAll('.klub').data(function(it){
         return it[this$.item];
+      }, function(it){
+        return it.id;
       }).enter().call(bind$(this, 'levelCreator'));
     }
   };

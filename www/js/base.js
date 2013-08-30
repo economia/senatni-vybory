@@ -100,7 +100,8 @@
           : year_poslanci_ids[key$] = {
             poslanec: pozice.poslanec,
             pozice: [],
-            klub: kluby[klub_id]
+            klub: kluby[klub_id],
+            id: klub_id
           };
         y$.pozice.push(pozice);
         return y$;
@@ -110,7 +111,8 @@
         year_pozice = year_kluby_ids[id];
         res$.push({
           klub: kluby[id],
-          pozice: year_pozice
+          pozice: year_pozice,
+          id: id
         });
       }
       year_kluby = res$;
@@ -131,6 +133,7 @@
     });
     barchart = new Barchart('#wrap', years);
     return setTimeout(function(){
+      barchart.item = 'poslanci';
       return barchart.filterData(function(year){
         year.klubyFull == null && (year.klubyFull = year.kluby);
         year.kluby = year.kluby.filter(function(level){

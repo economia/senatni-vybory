@@ -30,7 +30,9 @@ Bar =
             .attr \transform ~> "translate(#{@x it.year}, 0)"
             .attr \class \bar
         bar.selectAll \.klub
-            .data ~> it[@item]
+            .data do
+                ~> it[@item]
+                (.id)
             .enter!
             .call @~levelCreator
 

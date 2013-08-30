@@ -48,11 +48,11 @@ years = data.years.map ({year, pozice}) ->
         klub_id = pozice.klub?id || \void
         year_kluby_ids[klub_id] ?= []
             ..push pozice
-        year_poslanci_ids[pozice.poslanec.id] ?= {poslanec: pozice.poslanec, pozice: [], klub: kluby[klub_id]}
+        year_poslanci_ids[pozice.poslanec.id] ?= {poslanec: pozice.poslanec, pozice: [], klub: kluby[klub_id], id: klub_id}
             ..pozice.push pozice
 
     year_kluby = for id, year_pozice of year_kluby_ids
-        {klub: kluby[id], pozice:year_pozice}
+        {klub: kluby[id], pozice:year_pozice, id}
     year_poslanci = for id, year_poslanec of year_poslanci_ids
         year_poslanec
     year_kluby.sort (a, b) ->
