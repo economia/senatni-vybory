@@ -84,19 +84,7 @@
       var currentHeight, x$, this$ = this;
       currentHeight = 0;
       x$ = selection.append('rect');
-      x$.each(function(level, index){
-        var height;
-        if (index === 0) {
-          currentHeight = 0;
-        }
-        height = Math.round(this$.y(level.pozice.length));
-        level.height = height;
-        if (this$.item === 'poslanci') {
-          level.height -= 0.5;
-        }
-        currentHeight += height;
-        return level.offset = this$.height - currentHeight;
-      });
+      x$.call(bind$(this, 'levelShaper'));
       x$.attr('class', function(level){
         var css, ref$;
         css = ((ref$ = level.klub) != null ? ref$.css : void 8) || "void";
@@ -112,10 +100,29 @@
         }
       });
       x$.attr('width', this.x.rangeBand);
+      x$.attr('x', '0');
+      return x$;
+    },
+    levelShaper: function(selection){
+      var currentHeight, x$, this$ = this;
+      currentHeight = 0;
+      x$ = selection;
+      x$.each(function(level, index){
+        var height;
+        if (index === 0) {
+          currentHeight = 0;
+        }
+        height = Math.round(this$.y(level.pozice.length));
+        level.height = height;
+        if (this$.item === 'poslanci') {
+          level.height -= 0.5;
+        }
+        currentHeight += height;
+        return level.offset = this$.height - currentHeight;
+      });
       x$.attr('height', function(it){
         return it.height;
       });
-      x$.attr('x', '0');
       x$.attr('y', function(it){
         return it.offset;
       });

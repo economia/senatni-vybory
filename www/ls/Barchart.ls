@@ -54,13 +54,7 @@ Level =
     levelCreator: (selection) ->
         currentHeight = 0
         selection.append \rect
-            ..each (level, index) ~>
-                if index == 0 then currentHeight := 0
-                height = Math.round @y level.pozice.length
-                level.height = height
-                if @item == \poslanci then level.height -= 0.5
-                currentHeight += height
-                level.offset = @height - currentHeight
+            ..call @~levelShaper
             ..attr \class (level) ~>
                 css = level.klub?css || "void"
                 "#{@item} klub-#{css}"
@@ -71,9 +65,22 @@ Level =
                     nazev = level.klub?nazev || "Nezařazení"
                     "#{nazev}: #{level.pozice.length} pozic"
             ..attr \width @x.rangeBand
-            ..attr \height (.height)
             ..attr \x \0
+
+
+    levelShaper: (selection) ->
+        currentHeight = 0
+        selection
+            ..each (level, index) ~>
+                if index == 0 then currentHeight := 0
+                height = Math.round @y level.pozice.length
+                level.height = height
+                if @item == \poslanci then level.height -= 0.5
+                currentHeight += height
+                level.offset = @height - currentHeight
+            ..attr \height (.height)
             ..attr \y (.offset)
+
     levelDestroyer: (selection) ->
         selection.transition!
             ..call @transitionStepper 0
