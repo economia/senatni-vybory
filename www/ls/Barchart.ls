@@ -37,6 +37,9 @@ Bar =
                 ..attr \class (klub) ->
                     css = klub.klub?css || "void"
                     "klub klub-#{css}"
+                ..attr \data-tooltip (klub) ->
+                    nazev = klub.klub?nazev || "Nezařazení"
+                    "#{nazev}: #{klub.pozice.length} pozic"
                 ..attr \width @x.rangeBand
                 ..attr \height (.height)
                 ..attr \x \0

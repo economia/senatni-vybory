@@ -64,6 +64,11 @@
         css = ((ref$ = klub.klub) != null ? ref$.css : void 8) || "void";
         return "klub klub-" + css;
       });
+      x$.attr('data-tooltip', function(klub){
+        var nazev, ref$;
+        nazev = ((ref$ = klub.klub) != null ? ref$.nazev : void 8) || "Nezařazení";
+        return nazev + ": " + klub.pozice.length + " pozic";
+      });
       x$.attr('width', this.x.rangeBand);
       x$.attr('height', function(it){
         return it.height;

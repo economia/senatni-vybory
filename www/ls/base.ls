@@ -1,3 +1,4 @@
+new Tooltip!watchElements!
 class Year
     (@year, @pozice, @kluby) ->
 

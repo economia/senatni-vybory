@@ -1,5 +1,6 @@
 (function(){
   var Year, Pozice, Klub, Poslanec, Vybor, kluby, vybory, poslanci, this$ = this;
+  new Tooltip().watchElements();
   Year = (function(){
     Year.displayName = 'Year';
     var prototype = Year.prototype, constructor = Year;

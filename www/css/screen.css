@@ -9,6 +9,10 @@ body .barchart {
 body .barchart .bar .klub {
   fill: #ccc;
 }
+body .barchart .bar .klub:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
 body .barchart .bar .klub.klub-cssd {
   fill: #f29400;
 }
