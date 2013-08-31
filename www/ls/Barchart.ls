@@ -133,11 +133,14 @@ Transitions =
             baseDelay = duration
             delayMultipier = 0
             switch transitionId
-            | \lastItemDestroy-poslanci => delayMultipier = 0
+            | \lastItemDestroy-poslanci => delayMultipier = 1
             | \lastItemDestroy-kluby => delayMultipier = 1.5
             | \levelDestroy => delayMultipier = 0
             | \levelUpdate
                 delayMultipier = if @anyLevelCreated then 1 else 0
+                if @nowDisplayed == \poslanci
+                    delayMultipier = 0
+                    duration = 600
                 @anyLevelCreated = yes
 
             transition

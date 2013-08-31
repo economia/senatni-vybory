@@ -158,7 +158,7 @@
       }, 600);
     };
     return window.killFilter = function(){
-      var x$, this$ = this;
+      var x$;
       barchart.redraw('kluby');
       x$ = barchart;
       x$.filterData(function(year){
@@ -166,9 +166,7 @@
         year.poslanci = year.poslanciFull;
         return true;
       });
-      return setTimeout(function(){
-        return barchart.redraw('kluby');
-      }, 600);
+      return barchart.redraw('kluby');
     };
   });
 }).call(this);

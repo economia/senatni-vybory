@@ -90,5 +90,4 @@ window.killFilter = ->
             year.kluby = year.klubyFull
             year.poslanci = year.poslanciFull
             true
-    <~ setTimeout _, 600
     barchart.redraw \kluby

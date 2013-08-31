@@ -189,7 +189,7 @@
         delayMultipier = 0;
         switch (transitionId) {
         case 'lastItemDestroy-poslanci':
-          delayMultipier = 0;
+          delayMultipier = 1;
           break;
         case 'lastItemDestroy-kluby':
           delayMultipier = 1.5;
@@ -199,6 +199,10 @@
           break;
         case 'levelUpdate':
           delayMultipier = this$.anyLevelCreated ? 1 : 0;
+          if (this$.nowDisplayed === 'poslanci') {
+            delayMultipier = 0;
+            duration = 600;
+          }
           this$.anyLevelCreated = true;
         }
         x$ = transition;
