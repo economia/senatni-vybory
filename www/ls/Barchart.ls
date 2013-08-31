@@ -36,7 +36,7 @@ Bar =
         if @lastItem and @lastItem != @item
             @content.selectAll ".bar .#{@lastItem}"
                 ..transition!
-                    ..call @transitionStepper \lastItemDestroy
+                    ..call @transitionStepper "lastItemDestroy-#{@lastItem}"
                     ..\attr \transform "scale(0, 1)"
                     ..remove!
 
@@ -122,19 +122,27 @@ Filter =
 
 Transitions =
     anyLevelCreated: no
+    nowDisplayed: null
     transitionStepper: (transitionId) ->
-        (transition) ~>
-            baseDelay = 800
-            delay = baseDelay * switch transitionId
-            | \lastItemDestroy => 0
-            | \levelDestroy => 0
+        switch transitionId
+        | \lastItemDestroy-poslanci => @nowDisplayed = \kluby
+        | \lastItemDestroy-kluby    => @nowDisplayed = \poslanci
+
+        return (transition) ~>
+            duration = 800
+            baseDelay = duration
+            delayMultipier = 0
+            switch transitionId
+            | \lastItemDestroy-poslanci => delayMultipier = 0
+            | \lastItemDestroy-kluby => delayMultipier = 1.5
+            | \levelDestroy => delayMultipier = 0
             | \levelUpdate
-                delay = if @anyLevelCreated then 1 else 0
+                delayMultipier = if @anyLevelCreated then 1 else 0
                 @anyLevelCreated = yes
-                delay
+
             transition
-                ..duration 800
-                ..delay delay
+                ..duration duration
+                ..delay baseDelay * delayMultipier
 
 window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, Level, Filter, Transitions
     (@parentSelector, @data) ->

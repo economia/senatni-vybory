@@ -57,7 +57,7 @@
       if (this.lastItem && this.lastItem !== this.item) {
         y$ = this.content.selectAll(".bar ." + this.lastItem);
         z$ = y$.transition();
-        z$.call(this.transitionStepper('lastItemDestroy'));
+        z$.call(this.transitionStepper("lastItemDestroy-" + this.lastItem));
         z$['attr']('transform', "scale(0, 1)");
         z$.remove();
         return y$;
@@ -172,25 +172,38 @@
   };
   Transitions = {
     anyLevelCreated: false,
+    nowDisplayed: null,
     transitionStepper: function(transitionId){
+      var this$ = this;
+      switch (transitionId) {
+      case 'lastItemDestroy-poslanci':
+        this.nowDisplayed = 'kluby';
+        break;
+      case 'lastItemDestroy-kluby':
+        this.nowDisplayed = 'poslanci';
+      }
       return function(transition){
-        var baseDelay, delay, anyLevelCreated, x$;
-        baseDelay = 800;
-        delay = baseDelay * (function(){
-          switch (transitionId) {
-          case 'lastItemDestroy':
-            return 1.5;
-          case 'levelDestroy':
-            return 0;
-          case 'levelUpdate':
-            delay = anyLevelCreated ? 1 : 0;
-            anyLevelCreated = true;
-            return delay;
-          }
-        }());
+        var duration, baseDelay, delayMultipier, x$;
+        duration = 800;
+        baseDelay = duration;
+        delayMultipier = 0;
+        switch (transitionId) {
+        case 'lastItemDestroy-poslanci':
+          delayMultipier = 0;
+          break;
+        case 'lastItemDestroy-kluby':
+          delayMultipier = 1.5;
+          break;
+        case 'levelDestroy':
+          delayMultipier = 0;
+          break;
+        case 'levelUpdate':
+          delayMultipier = this$.anyLevelCreated ? 1 : 0;
+          this$.anyLevelCreated = true;
+        }
         x$ = transition;
-        x$.duration(800);
-        x$.delay(delay);
+        x$.duration(duration);
+        x$.delay(baseDelay * delayMultipier);
         return x$;
       };
     }
