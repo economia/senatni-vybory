@@ -36,7 +36,7 @@ Bar =
         if @lastItem and @lastItem != @item
             @content.selectAll ".bar .#{@lastItem}"
                 ..transition!
-                    ..call @transitionStepper 1.7
+                    ..call @transitionStepper \lastItemDestroy
                     ..\attr \transform "scale(0, 1)"
                     ..remove!
 
@@ -102,7 +102,7 @@ Level =
 
     levelUpdater: (selection) ->
         selection.transition!
-            ..call @transitionStepper 1
+            ..call @transitionStepper \levelUpdate
             ..call @~levelShaper
 
 
@@ -110,7 +110,7 @@ Level =
         selection
             ..classed \notHiding no
             ..transition!
-                ..call @transitionStepper 0
+                ..call @transitionStepper \levelDestroy
                 ..attr \transform "scale(0, 1)"
                 ..remove!
 
@@ -121,9 +121,17 @@ Filter =
         @data = @dataFull.filter filterFunction
 
 Transitions =
-    transitionStepper: (step) ->
-        (transition) ->
-            delay = Math.max 0, step * 800 - 200
+    anyLevelCreated: no
+    transitionStepper: (transitionId) ->
+        (transition) ~>
+            baseDelay = 800
+            delay = baseDelay * switch transitionId
+            | \lastItemDestroy => 0
+            | \levelDestroy => 0
+            | \levelUpdate
+                delay = if @anyLevelCreated then 1 else 0
+                @anyLevelCreated = yes
+                delay
             transition
                 ..duration 800
                 ..delay delay

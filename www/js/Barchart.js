@@ -57,7 +57,7 @@
       if (this.lastItem && this.lastItem !== this.item) {
         y$ = this.content.selectAll(".bar ." + this.lastItem);
         z$ = y$.transition();
-        z$.call(this.transitionStepper(1.7));
+        z$.call(this.transitionStepper('lastItemDestroy'));
         z$['attr']('transform', "scale(0, 1)");
         z$.remove();
         return y$;
@@ -149,7 +149,7 @@
     levelUpdater: function(selection){
       var x$;
       x$ = selection.transition();
-      x$.call(this.transitionStepper(1));
+      x$.call(this.transitionStepper('levelUpdate'));
       x$.call(bind$(this, 'levelShaper'));
       return x$;
     },
@@ -158,7 +158,7 @@
       x$ = selection;
       x$.classed('notHiding', false);
       y$ = x$.transition();
-      y$.call(this.transitionStepper(0));
+      y$.call(this.transitionStepper('levelDestroy'));
       y$.attr('transform', "scale(0, 1)");
       y$.remove();
       return x$;
@@ -171,10 +171,23 @@
     }
   };
   Transitions = {
-    transitionStepper: function(step){
+    anyLevelCreated: false,
+    transitionStepper: function(transitionId){
       return function(transition){
-        var delay, x$;
-        delay = Math.max(0, step * 800 - 200);
+        var baseDelay, delay, anyLevelCreated, x$;
+        baseDelay = 800;
+        delay = baseDelay * (function(){
+          switch (transitionId) {
+          case 'lastItemDestroy':
+            return 1.5;
+          case 'levelDestroy':
+            return 0;
+          case 'levelUpdate':
+            delay = anyLevelCreated ? 1 : 0;
+            anyLevelCreated = true;
+            return delay;
+          }
+        }());
         x$ = transition;
         x$.duration(800);
         x$.delay(delay);
