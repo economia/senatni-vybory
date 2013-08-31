@@ -34,11 +34,23 @@ Bar =
         @content.selectAll \.bar
             ..call @~drawLevels
         if @lastItem and @lastItem != @item
-            @content.selectAll ".bar .#{@lastItem}"
-                ..transition!
+            transition = @content.selectAll ".bar .#{@lastItem}"
+                .classed \notHiding no
+                .classed \toDestroy yes
+                .attr \opacity 1
+                .transition!
                     ..call @transitionStepper "lastItemDestroy-#{@lastItem}"
-                    ..\attr \transform "scale(0, 1)"
+            if @lastItem == \poslanci
+                d3.selectAll ".bar .toDestroy"
+                    ..transition!
+                        ..delay 600
+                        ..remove!
+                transition
+                    ..attr \transform "scale(0, 1)"
                     ..remove!
+            else
+                transition
+                    ..attr \opacity 0.5
 
     barCreator: (selection) ->
         bar = selection.append \g
@@ -52,7 +64,7 @@ Bar =
 
 Level =
     drawLevels: (bar) ->
-        @levels = bar.selectAll ".#{@item}"
+        @levels = bar.selectAll ".#{@item}.notHiding"
             .data do
                 ~> it[@item]
                 (.id)
@@ -86,12 +98,15 @@ Level =
 
     levelShaper: (selection) ->
         currentHeight = 0
+        heightError = 0
         selection
             ..each (level, index) ~>
                 if index == 0 then currentHeight := 0
-                height = Math.round @y level.pozice.length
+                correctHeight = heightError + @y level.pozice.length
+                height = Math.round correctHeight
+                heightError := correctHeight - height
                 level.height = height
-                if level.type == \poslanci then level.height -= 0.5
+                if level.type == \poslanci then level.height -= 1
                 currentHeight += height
                 level.offset = @height - currentHeight
             ..attr \height (.height)

@@ -48,19 +48,29 @@
   };
   Bar = {
     drawBars: function(item){
-      var x$, y$, z$;
+      var x$, y$, transition, z$, z1$, z2$, z3$;
       this.lastItem = this.item;
       this.item = item;
       this.content.selectAll('.bar').data(this.data).enter().call(bind$(this, 'barCreator'));
       x$ = this.content.selectAll('.bar');
       x$.call(bind$(this, 'drawLevels'));
       if (this.lastItem && this.lastItem !== this.item) {
-        y$ = this.content.selectAll(".bar ." + this.lastItem);
-        z$ = y$.transition();
-        z$.call(this.transitionStepper("lastItemDestroy-" + this.lastItem));
-        z$['attr']('transform', "scale(0, 1)");
-        z$.remove();
-        return y$;
+        y$ = transition = this.content.selectAll(".bar ." + this.lastItem).classed('notHiding', false).classed('toDestroy', true).attr('opacity', 1).transition();
+        y$.call(this.transitionStepper("lastItemDestroy-" + this.lastItem));
+        if (this.lastItem === 'poslanci') {
+          z$ = d3.selectAll(".bar .toDestroy");
+          z1$ = z$.transition();
+          z1$.delay(600);
+          z1$.remove();
+          z2$ = transition;
+          z2$.attr('transform', "scale(0, 1)");
+          z2$.remove();
+          return z2$;
+        } else {
+          z3$ = transition;
+          z3$.attr('opacity', 0.5);
+          return z3$;
+        }
       }
     },
     barCreator: function(selection){
@@ -79,7 +89,7 @@
   Level = {
     drawLevels: function(bar){
       var x$, this$ = this;
-      this.levels = bar.selectAll("." + this.item).data(function(it){
+      this.levels = bar.selectAll("." + this.item + ".notHiding").data(function(it){
         return it[this$.item];
       }, function(it){
         return it.id;
@@ -121,18 +131,21 @@
       return x$;
     },
     levelShaper: function(selection){
-      var currentHeight, x$, this$ = this;
+      var currentHeight, heightError, x$, this$ = this;
       currentHeight = 0;
+      heightError = 0;
       x$ = selection;
       x$.each(function(level, index){
-        var height;
+        var correctHeight, height;
         if (index === 0) {
           currentHeight = 0;
         }
-        height = Math.round(this$.y(level.pozice.length));
+        correctHeight = heightError + this$.y(level.pozice.length);
+        height = Math.round(correctHeight);
+        heightError = correctHeight - height;
         level.height = height;
         if (level.type === 'poslanci') {
-          level.height -= 0.5;
+          level.height -= 1;
         }
         currentHeight += height;
         return level.offset = this$.height - currentHeight;
