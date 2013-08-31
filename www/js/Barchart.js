@@ -174,37 +174,32 @@
     anyLevelCreated: false,
     nowDisplayed: null,
     transitionStepper: function(transitionId){
-      var this$ = this;
+      var duration, baseDelay, delayMultipier, this$ = this;
+      duration = 800;
+      baseDelay = duration;
+      delayMultipier = 0;
       switch (transitionId) {
       case 'lastItemDestroy-poslanci':
         this.nowDisplayed = 'kluby';
+        delayMultipier = 1;
         break;
       case 'lastItemDestroy-kluby':
         this.nowDisplayed = 'poslanci';
+        delayMultipier = 1.5;
+        break;
+      case 'levelDestroy':
+        delayMultipier = 0;
+        break;
+      case 'levelUpdate':
+        delayMultipier = this.anyLevelCreated ? 1 : 0;
+        if (this.nowDisplayed === 'poslanci') {
+          delayMultipier = 0;
+          duration = 600;
+        }
+        this.anyLevelCreated = true;
       }
       return function(transition){
-        var duration, baseDelay, delayMultipier, x$;
-        duration = 800;
-        baseDelay = duration;
-        delayMultipier = 0;
-        switch (transitionId) {
-        case 'lastItemDestroy-poslanci':
-          delayMultipier = 1;
-          break;
-        case 'lastItemDestroy-kluby':
-          delayMultipier = 1.5;
-          break;
-        case 'levelDestroy':
-          delayMultipier = 0;
-          break;
-        case 'levelUpdate':
-          delayMultipier = this$.anyLevelCreated ? 1 : 0;
-          if (this$.nowDisplayed === 'poslanci') {
-            delayMultipier = 0;
-            duration = 600;
-          }
-          this$.anyLevelCreated = true;
-        }
+        var x$;
         x$ = transition;
         x$.duration(duration);
         x$.delay(baseDelay * delayMultipier);

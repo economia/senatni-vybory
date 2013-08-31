@@ -40,8 +40,6 @@ Bar =
                     ..\attr \transform "scale(0, 1)"
                     ..remove!
 
-
-
     barCreator: (selection) ->
         bar = selection.append \g
             ..call @~barShaper
@@ -50,6 +48,7 @@ Bar =
         selection
             .attr \transform ~> "translate(#{@x it.year}, 0)"
             .attr \class \bar
+
 
 Level =
     drawLevels: (bar) ->
@@ -85,7 +84,6 @@ Level =
             ..attr \width @x.rangeBand
             ..attr \x \0
 
-
     levelShaper: (selection) ->
         currentHeight = 0
         selection
@@ -105,7 +103,6 @@ Level =
             ..call @transitionStepper \levelUpdate
             ..call @~levelShaper
 
-
     levelDestroyer: (selection) ->
         selection
             ..classed \notHiding no
@@ -120,29 +117,31 @@ Filter =
         @dataFull ?= @data
         @data = @dataFull.filter filterFunction
 
+
 Transitions =
     anyLevelCreated: no
     nowDisplayed: null
     transitionStepper: (transitionId) ->
+        duration       = 800
+        baseDelay      = duration
+        delayMultipier = 0
         switch transitionId
-        | \lastItemDestroy-poslanci => @nowDisplayed = \kluby
-        | \lastItemDestroy-kluby    => @nowDisplayed = \poslanci
+        | \lastItemDestroy-poslanci
+            @nowDisplayed = \kluby
+            delayMultipier = 1
+        | \lastItemDestroy-kluby
+            @nowDisplayed = \poslanci
+            delayMultipier = 1.5
+        | \levelDestroy
+            delayMultipier = 0
+        | \levelUpdate
+            delayMultipier = if @anyLevelCreated then 1 else 0
+            if @nowDisplayed == \poslanci
+                delayMultipier = 0
+                duration = 600
+            @anyLevelCreated = yes
 
         return (transition) ~>
-            duration = 800
-            baseDelay = duration
-            delayMultipier = 0
-            switch transitionId
-            | \lastItemDestroy-poslanci => delayMultipier = 1
-            | \lastItemDestroy-kluby => delayMultipier = 1.5
-            | \levelDestroy => delayMultipier = 0
-            | \levelUpdate
-                delayMultipier = if @anyLevelCreated then 1 else 0
-                if @nowDisplayed == \poslanci
-                    delayMultipier = 0
-                    duration = 600
-                @anyLevelCreated = yes
-
             transition
                 ..duration duration
                 ..delay baseDelay * delayMultipier
