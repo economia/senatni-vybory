@@ -71,7 +71,7 @@
   vybory = {};
   poslanci = {};
   d3.json("../data/data.json", function(err, data){
-    var id, ref$, nazev, poslanec_data, years, x$, barchart;
+    var id, ref$, nazev, poslanec_data, years, x$, barchart, y$, backButton;
     for (id in ref$ = data.kluby_ids) {
       nazev = ref$[id];
       kluby[id] = new Klub(id, nazev);
@@ -138,6 +138,7 @@
     x$.redraw('kluby');
     window.filterParty = function(partyCss){
       var x$, this$ = this;
+      backButton.classed('disabled', false);
       x$ = barchart;
       x$.filterData(function(year){
         year.klubyFull == null && (year.klubyFull = year.kluby);
@@ -157,8 +158,9 @@
         return barchart.redraw('poslanci');
       }, 600);
     };
-    return window.killFilter = function(){
+    window.killFilter = function(){
       var x$;
+      backButton.classed('disabled', true);
       barchart.redraw('kluby');
       x$ = barchart;
       x$.filterData(function(year){
@@ -168,5 +170,9 @@
       });
       return barchart.redraw('kluby');
     };
+    y$ = backButton = d3.select('#wrap').append('a');
+    y$.attr('class', 'backButton disabled');
+    y$.on('click', window.killFilter);
+    return y$;
   });
 }).call(this);

@@ -70,7 +70,9 @@ years = data.years.map ({year, pozice}) ->
 
 barchart = new Barchart \#wrap years
     ..redraw \kluby
+
 window.filterParty = (partyCss) ->
+    backButton.classed \disabled no
     barchart
         ..filterData (year) ->
             year.klubyFull ?= year.kluby
@@ -84,6 +86,7 @@ window.filterParty = (partyCss) ->
     <~ setTimeout _, 600
     barchart.redraw \poslanci
 window.killFilter = ->
+    backButton.classed \disabled yes
     barchart.redraw \kluby
     barchart
         ..filterData (year) ->
@@ -91,3 +94,7 @@ window.killFilter = ->
             year.poslanci = year.poslanciFull
             true
     barchart.redraw \kluby
+
+backButton = d3.select \#wrap .append \a
+    ..attr \class 'backButton disabled'
+    ..on \click window.killFilter

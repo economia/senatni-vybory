@@ -89,3 +89,33 @@ body .barchart .bar .kluby.klub-void,
 body .barchart .bar .poslanci.klub-void {
   fill: #ccc;
 }
+body a.backButton {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  display: block;
+  width: 38px;
+  height: 38px;
+  border: 2px solid #1d1d1d;
+  border-radius: 50%;
+  -o-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  background: #fff url("../img/back.png") -2px -2px;
+}
+body a.backButton:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+body a.backButton:active {
+  background-color: #aaa;
+}
+body a.backButton img {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+}
+body a.backButton.disabled {
+  display: none;
+}
