@@ -86,7 +86,6 @@ window.filterParty = (partyCss) ->
     <~ setTimeout _, 600
     barchart.redraw \poslanci
 window.killFilter = ->
-    backButton.classed \disabled yes
     barchart.redraw \kluby
     barchart
         ..filterData (year) ->
@@ -94,6 +93,8 @@ window.killFilter = ->
             year.poslanci = year.poslanciFull
             true
     barchart.redraw \kluby
+    <~ setTimeout _, 200
+    backButton.classed \disabled yes
 
 backButton = d3.select \#wrap .append \a
     ..attr \class 'backButton disabled'

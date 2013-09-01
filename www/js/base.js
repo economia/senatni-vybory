@@ -159,8 +159,7 @@
       }, 600);
     };
     window.killFilter = function(){
-      var x$;
-      backButton.classed('disabled', true);
+      var x$, this$ = this;
       barchart.redraw('kluby');
       x$ = barchart;
       x$.filterData(function(year){
@@ -168,7 +167,10 @@
         year.poslanci = year.poslanciFull;
         return true;
       });
-      return barchart.redraw('kluby');
+      barchart.redraw('kluby');
+      return setTimeout(function(){
+        return backButton.classed('disabled', true);
+      }, 200);
     };
     y$ = backButton = d3.select('#wrap').append('a');
     y$.attr('class', 'backButton disabled');
