@@ -72,7 +72,7 @@
   vybory = {};
   poslanci = {};
   d3.json("../data/data.json", function(err, data){
-    var id, ref$, nazev, nullKlub, poslanec_data, years, x$, barchart, y$, backButton;
+    var id, ref$, nazev, nullKlub, poslanec_data, years, height, width, x$, barchart, y$, backButton;
     for (id in ref$ = data.kluby_ids) {
       nazev = ref$[id];
       kluby[id] = new Klub(id, nazev);
@@ -136,7 +136,12 @@
       });
       return new Year(year, pozice, year_kluby, year_poslanci);
     });
-    x$ = barchart = new Barchart('#wrap', years);
+    height = 700;
+    width = 650;
+    x$ = barchart = new Barchart('#wrap', years, {
+      height: height,
+      width: width
+    });
     x$.redraw('kluby');
     window.filterParty = function(partyCss){
       var x$, this$ = this;

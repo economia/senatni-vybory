@@ -283,11 +283,12 @@
     importAll$(prototype, arguments[6]);
     importAll$(prototype, arguments[7]);
     importAll$(prototype, arguments[8]);
-    function Barchart(parentSelector, data){
-      var x$, y$, z$;
+    function Barchart(parentSelector, data, options){
+      var width, height, x$, y$, z$;
       this.parentSelector = parentSelector;
       this.data = data;
-      this.computeDimensions(650, 700);
+      width = options.width, height = options.height;
+      this.computeDimensions(width, height);
       this.recomputeXScale();
       this.recomputeYScale();
       x$ = this.svg = d3.selectAll(this.parentSelector).append('svg');

@@ -68,8 +68,9 @@ years = data.years.map ({year, pozice}) ->
     year_poslanci.sort (a, b) -> a.pozice.length - b.pozice.length
 
     new Year year, pozice, year_kluby, year_poslanci
-
-barchart = new Barchart \#wrap years
+height = 700
+width = 650
+barchart = new Barchart \#wrap years, {height, width}
     ..redraw \kluby
 
 window.filterParty = (partyCss) ->
