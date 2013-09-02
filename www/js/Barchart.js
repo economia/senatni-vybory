@@ -69,8 +69,8 @@
   };
   YAxis = {
     drawYAxis: function(){
-      var x$, yAxis, y$;
-      x$ = yAxis = d3.svg.axis();
+      var x$, y$;
+      x$ = this.yAxis = d3.svg.axis();
       x$.scale(this.y);
       x$.tickSize(4);
       x$.tickFormat(d3.format(".0f"));
@@ -79,8 +79,16 @@
       y$ = this.yAxisGroup = this.axesGroup.append('g');
       y$.attr('transform', "translate(" + this.margin.left + "," + this.margin.top + ")");
       y$.attr('class', 'y');
-      y$.call(yAxis);
+      y$.call(this.yAxis);
       return y$;
+    },
+    redrawYAxis: function(){
+      var x$, y$;
+      x$ = this.yAxisGroup;
+      y$ = x$.transition();
+      y$.call(this.transitionStepper('axisUpdate'));
+      y$.call(this.yAxis);
+      return x$;
     }
   };
   Bar = {
@@ -247,6 +255,9 @@
           duration = 600;
         }
         this.anyLevelCreated = true;
+        break;
+      case 'axisUpdate':
+        delayMultipier = 1;
       }
       return function(transition){
         var x$;
@@ -290,6 +301,7 @@
     }
     prototype.redraw = function(){
       this.recomputeYScale();
+      this.redrawYAxis();
       return this.drawBars.apply(this, arguments);
     };
     return Barchart;

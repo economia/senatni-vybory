@@ -42,7 +42,7 @@ XAxis =
                 ..attr \dy 12
 YAxis =
     drawYAxis: ->
-        yAxis = d3.svg.axis!
+        @yAxis = d3.svg.axis!
             ..scale @y
             ..tickSize 4
             ..tickFormat d3.format ".0f"
@@ -51,7 +51,13 @@ YAxis =
         @yAxisGroup = @axesGroup.append \g
             ..attr \transform "translate(#{@margin.left},#{@margin.top})"
             ..attr \class \y
-            ..call yAxis
+            ..call @yAxis
+    redrawYAxis: ->
+        @yAxisGroup
+            ..transition!
+                ..call @transitionStepper \axisUpdate
+                ..call @yAxis
+
 Bar =
     drawBars: (item) ->
         @lastItem = @item
@@ -184,6 +190,8 @@ Transitions =
                 delayMultipier = 0
                 duration = 600
             @anyLevelCreated = yes
+        | \axisUpdate
+            delayMultipier = 1
 
         return (transition) ~>
             transition
@@ -209,6 +217,7 @@ window.Barchart = class Barchart implements Dimensionable, XScale, YScale, XAxis
 
     redraw: ->
         @recomputeYScale!
+        @redrawYAxis!
         @drawBars ...
 
 
