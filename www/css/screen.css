@@ -10,6 +10,13 @@ body .barchart .axes .x text,
 body .barchart .axes .y text {
   font-size: 0.8em;
 }
+body .barchart .axes .y path {
+  fill: #000;
+}
+body .barchart .axes .y line {
+  stroke: #000;
+  stroke-width: 1px;
+}
 body .barchart .bar .kluby,
 body .barchart .bar .poslanci {
   fill: #ccc;

@@ -3,7 +3,7 @@ Dimensionable =
         top: 10
         right: 0
         bottom: 22
-        left: 40
+        left: 39
     computeDimensions: (@fullWidth, @fullHeight) ->
         @width = @fullWidth - @margin.left - @margin.right
         @height = @fullHeight - @margin.top - @margin.bottom
@@ -44,9 +44,9 @@ YAxis =
     drawYAxis: ->
         yAxis = d3.svg.axis!
             ..scale @y
-            ..tickSize 3
+            ..tickSize 4
             ..tickFormat d3.format ".0f"
-            ..outerTickSize 0
+            ..outerTickSize 1
             ..orient \left
         @yAxisGroup = @axesGroup.append \g
             ..attr \transform "translate(#{@margin.left},#{@margin.top})"

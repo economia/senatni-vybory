@@ -5,7 +5,7 @@
       top: 10,
       right: 0,
       bottom: 22,
-      left: 40
+      left: 39
     },
     computeDimensions: function(fullWidth, fullHeight){
       this.fullWidth = fullWidth;
@@ -72,9 +72,9 @@
       var x$, yAxis, y$;
       x$ = yAxis = d3.svg.axis();
       x$.scale(this.y);
-      x$.tickSize(3);
+      x$.tickSize(4);
       x$.tickFormat(d3.format(".0f"));
-      x$.outerTickSize(0);
+      x$.outerTickSize(1);
       x$.orient('left');
       y$ = this.yAxisGroup = this.axesGroup.append('g');
       y$.attr('transform', "translate(" + this.margin.left + "," + this.margin.top + ")");
