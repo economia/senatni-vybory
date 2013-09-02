@@ -77,7 +77,7 @@
       nazev = ref$[id];
       kluby[id] = new Klub(id, nazev);
     }
-    nullKlub = kluby[9999] = new Klub(9999, 'Nezařazení');
+    nullKlub = kluby[9999] = new Klub(9999, "Mimo klub");
     for (id in ref$ = data.vybory_ids) {
       nazev = ref$[id];
       vybory[id] = new Vybor(id, nazev);

@@ -34,7 +34,7 @@ poslanci = {}
 (err, data) <~ d3.json "../data/data.json"
 for id, nazev of data.kluby_ids
     kluby[id] = new Klub id, nazev
-nullKlub = kluby[9999] = new Klub 9999, \Nezařazení
+nullKlub = kluby[9999] = new Klub 9999, "Mimo klub"
 for id, nazev of data.vybory_ids
     vybory[id] = new Vybor id, nazev
 
