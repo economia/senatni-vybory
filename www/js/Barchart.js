@@ -4,7 +4,7 @@
     margin: {
       top: 0,
       right: 0,
-      bottom: 30,
+      bottom: 22,
       left: 0
     },
     computeDimensions: function(fullWidth, fullHeight){
@@ -53,13 +53,17 @@
       x$.scale(this.x);
       x$.ticks(d3.time.years);
       x$.tickSize(3);
+      x$.tickFormat(function(it){
+        return it.toString().substr(2);
+      });
       x$.outerTickSize(0);
       x$.orient('bottom');
       y$ = this.xAxisGroup = this.axesGroup.append('g');
+      y$.attr('class', 'x');
       y$.attr('transform', "translate(" + this.margin.left + ", " + (this.height + this.margin.top) + ")");
       y$.call(xAxis);
       z$ = y$.selectAll('text');
-      z$.attr('dy', 9);
+      z$.attr('dy', 12);
       return y$;
     }
   };

@@ -6,6 +6,9 @@ body {
 body .barchart {
   background: #fff;
 }
+body .barchart .axes .x text {
+  font-size: 0.8em;
+}
 body .barchart .bar .kluby,
 body .barchart .bar .poslanci {
   fill: #ccc;

@@ -2,7 +2,7 @@ Dimensionable =
     margin:
         top: 0
         right: 0
-        bottom: 30
+        bottom: 22
         left: 0
     computeDimensions: (@fullWidth, @fullHeight) ->
         @width = @fullWidth - @margin.left - @margin.right
@@ -30,13 +30,16 @@ XAxis =
             ..scale @x
             ..ticks d3.time.years
             ..tickSize 3
+            ..tickFormat ->
+                it.toString!substr 2
             ..outerTickSize 0
             ..orient \bottom
         @xAxisGroup = @axesGroup.append \g
+            ..attr \class \x
             ..attr \transform "translate(#{@margin.left}, #{@height + @margin.top})"
             ..call xAxis
             ..selectAll \text
-                ..attr \dy 9
+                ..attr \dy 12
 Bar =
     drawBars: (item) ->
         @lastItem = @item
