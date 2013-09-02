@@ -167,7 +167,7 @@
         if (level.type === 'kluby') {
           return window.filterParty(level.klub.css);
         } else {
-          return window.killFilter();
+          return window.goToPoslanec(level);
         }
       });
       x$.attr('width', this.x.rangeBand);

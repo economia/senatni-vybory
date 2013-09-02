@@ -15,10 +15,11 @@
   Pozice = (function(){
     Pozice.displayName = 'Pozice';
     var prototype = Pozice.prototype, constructor = Pozice;
-    function Pozice(poslanec, klub, vybor){
+    function Pozice(poslanec, klub, vybor, year){
       this.poslanec = poslanec;
       this.klub = klub;
       this.vybor = vybor;
+      this.year = year;
     }
     return Pozice;
   }());
@@ -93,7 +94,7 @@
         klub = kluby[klub_id];
         vybor = vybory[vybor_id];
         poslanec = poslanci[poslanec_id];
-        return new Pozice(poslanec, klub, vybor);
+        return new Pozice(poslanec, klub, vybor, year);
       });
       year_kluby_ids = {};
       year_poslanci_ids = {};
@@ -171,6 +172,27 @@
       return setTimeout(function(){
         return backButton.classed('disabled', true);
       }, 200);
+    };
+    window.goToPoslanec = function(level, yearIndex){
+      var year, obdobi;
+      year = level.pozice[0].year;
+      obdobi = (function(){
+        switch (false) {
+        case !(year <= 1996):
+          return 1;
+        case !(year <= 1998):
+          return 2;
+        case !(year <= 2002):
+          return 3;
+        case !(year <= 2006):
+          return 4;
+        case !(year <= 2010):
+          return 5;
+        default:
+          return 6;
+        }
+      }());
+      return window.open("http://www.psp.cz/sqw/detail.sqw?id=" + level.poslanec.id + "&o=" + obdobi);
     };
     y$ = backButton = d3.select('#wrap').append('a');
     y$.attr('class', 'backButton disabled');

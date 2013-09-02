@@ -125,7 +125,7 @@ Level =
                 if level.type == \kluby
                     window.filterParty level.klub.css
                 else
-                    window.killFilter!
+                    window.goToPoslanec level
             ..attr \width @x.rangeBand
             ..attr \x \0
 

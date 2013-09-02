@@ -3,7 +3,7 @@ class Year
     (@year, @pozice, @kluby, @poslanci) ->
 
 class Pozice
-    (@poslanec, @klub, @vybor) ->
+    (@poslanec, @klub, @vybor, @year) ->
 
 class Klub
     (@id, @nazev) ->
@@ -45,7 +45,7 @@ years = data.years.map ({year, pozice}) ->
         klub     = kluby[klub_id]
         vybor    = vybory[vybor_id]
         poslanec = poslanci[poslanec_id]
-        new Pozice poslanec, klub, vybor
+        new Pozice poslanec, klub, vybor, year
     year_kluby_ids = {}
     year_poslanci_ids = {}
     pozice.forEach (pozice)->
@@ -95,6 +95,17 @@ window.killFilter = ->
     barchart.redraw \kluby
     <~ setTimeout _, 200
     backButton.classed \disabled yes
+
+window.goToPoslanec = (level, yearIndex) ->
+    year =  level.pozice.0.year
+    obdobi = switch
+    | year <= 1996 => 1
+    | year <= 1998 => 2
+    | year <= 2002 => 3
+    | year <= 2006 => 4
+    | year <= 2010 => 5
+    | otherwise    => 6
+    window.open "http://www.psp.cz/sqw/detail.sqw?id=#{level.poslanec.id}&o=#{obdobi}"
 
 backButton = d3.select \#wrap .append \a
     ..attr \class 'backButton disabled'
