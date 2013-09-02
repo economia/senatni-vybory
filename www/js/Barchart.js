@@ -84,6 +84,9 @@
     },
     redrawYAxis: function(){
       var x$, y$;
+      if (this.item === 'poslanci') {
+        return;
+      }
       x$ = this.yAxisGroup;
       y$ = x$.transition();
       y$.call(this.transitionStepper('axisUpdate'));
@@ -301,8 +304,8 @@
     }
     prototype.redraw = function(){
       this.recomputeYScale.apply(this, arguments);
-      this.redrawYAxis();
-      return this.drawBars.apply(this, arguments);
+      this.drawBars.apply(this, arguments);
+      return this.redrawYAxis();
     };
     return Barchart;
   }(Dimensionable, XScale, YScale, XAxis, YAxis, Bar, Level, Filter, Transitions));

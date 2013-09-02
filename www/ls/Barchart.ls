@@ -58,6 +58,7 @@ YAxis =
             ..attr \class \y
             ..call @yAxis
     redrawYAxis: ->
+        return if @item is \poslanci
         @yAxisGroup
             ..transition!
                 ..call @transitionStepper \axisUpdate
@@ -222,7 +223,7 @@ window.Barchart = class Barchart implements Dimensionable, XScale, YScale, XAxis
 
     redraw: ->
         @recomputeYScale ...
-        @redrawYAxis!
         @drawBars ...
+        @redrawYAxis!
 
 
