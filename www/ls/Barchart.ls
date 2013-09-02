@@ -22,7 +22,7 @@ YScale =
             length
         @y ?= d3.scale.linear!
             ..domain [0, Math.max ...lengths]
-            ..range [0 @height]
+            ..range [@height, 0]
 
 XAxis =
     drawXAxis: ->
@@ -102,7 +102,6 @@ Level =
             .call @~levelUpdater
 
     levelCreator: (selection) ->
-        currentHeight = 0
         selection.append \rect
             ..call @~levelShaper
             ..attr \transform "scale(0, 1)"
@@ -124,18 +123,20 @@ Level =
             ..attr \x \0
 
     levelShaper: (selection) ->
-        currentHeight = 0
-        heightError = 0
+        currentOffset = 0
+        offsetError = 0
         selection
             ..each (level, index) ~>
-                if index == 0 then currentHeight := 0
-                correctHeight = heightError + @y level.pozice.length
-                height = Math.round correctHeight
-                heightError := correctHeight - height
-                level.height = height
+                if index == 0
+                    currentOffset := 0
+                    offsetError := 0
+                correctOffset = offsetError + @y level.pozice.length
+                offset = Math.round correctOffset
+                offsetError := correctOffset - offset
+                level.offset = offset - currentOffset
+                level.height = @height - offset
+                currentOffset += level.height
                 if level.type == \poslanci then level.height -= 1
-                currentHeight += height
-                level.offset = @height - currentHeight
             ..attr \height (.height)
             ..attr \y (.offset)
             ..attr \transform "scale(1, 1)"

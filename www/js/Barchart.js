@@ -42,7 +42,7 @@
         ? ref$
         : this.y = d3.scale.linear();
       x$.domain([0, Math.max.apply(Math, lengths)]);
-      x$.range([0, this.height]);
+      x$.range([this.height, 0]);
       return x$;
     }
   };
@@ -136,8 +136,7 @@
       return bar.selectAll("." + this.item + ".notHiding").call(bind$(this, 'levelUpdater'));
     },
     levelCreator: function(selection){
-      var currentHeight, x$, this$ = this;
-      currentHeight = 0;
+      var x$, this$ = this;
       x$ = selection.append('rect');
       x$.call(bind$(this, 'levelShaper'));
       x$.attr('transform', "scale(0, 1)");
@@ -167,24 +166,25 @@
       return x$;
     },
     levelShaper: function(selection){
-      var currentHeight, heightError, x$, this$ = this;
-      currentHeight = 0;
-      heightError = 0;
+      var currentOffset, offsetError, x$, this$ = this;
+      currentOffset = 0;
+      offsetError = 0;
       x$ = selection;
       x$.each(function(level, index){
-        var correctHeight, height;
+        var correctOffset, offset;
         if (index === 0) {
-          currentHeight = 0;
+          currentOffset = 0;
+          offsetError = 0;
         }
-        correctHeight = heightError + this$.y(level.pozice.length);
-        height = Math.round(correctHeight);
-        heightError = correctHeight - height;
-        level.height = height;
+        correctOffset = offsetError + this$.y(level.pozice.length);
+        offset = Math.round(correctOffset);
+        offsetError = correctOffset - offset;
+        level.offset = offset - currentOffset;
+        level.height = this$.height - offset;
+        currentOffset += level.height;
         if (level.type === 'poslanci') {
-          level.height -= 1;
+          return level.height -= 1;
         }
-        currentHeight += height;
-        return level.offset = this$.height - currentHeight;
       });
       x$.attr('height', function(it){
         return it.height;
