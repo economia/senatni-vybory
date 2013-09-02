@@ -1,11 +1,11 @@
 (function(){
-  var Dimensionable, XScale, YScale, XAxis, Bar, Level, Filter, Transitions, Barchart;
+  var Dimensionable, XScale, YScale, XAxis, YAxis, Bar, Level, Filter, Transitions, Barchart;
   Dimensionable = {
     margin: {
       top: 0,
       right: 0,
       bottom: 22,
-      left: 0
+      left: 40
     },
     computeDimensions: function(fullWidth, fullHeight){
       this.fullWidth = fullWidth;
@@ -64,6 +64,21 @@
       y$.call(xAxis);
       z$ = y$.selectAll('text');
       z$.attr('dy', 12);
+      return y$;
+    }
+  };
+  YAxis = {
+    drawYAxis: function(){
+      var x$, yAxis, y$;
+      x$ = yAxis = d3.svg.axis();
+      x$.scale(this.y);
+      x$.tickSize(3);
+      x$.tickFormat(d3.format(".0f"));
+      x$.outerTickSize(0);
+      x$.orient('right');
+      y$ = this.yAxisGroup = this.axesGroup.append('g');
+      y$.attr('class', 'y');
+      y$.call(yAxis);
       return y$;
     }
   };
@@ -270,13 +285,14 @@
       z$ = this.axesGroup = this.svg.append('g');
       z$.attr('class', 'axes');
       this.drawXAxis();
+      this.drawYAxis();
     }
     prototype.redraw = function(){
       this.recomputeYScale();
       return this.drawBars.apply(this, arguments);
     };
     return Barchart;
-  }(Dimensionable, XScale, YScale, void 8, XAxis, Bar, Level, Filter, Transitions));
+  }(Dimensionable, XScale, YScale, XAxis, YAxis, Bar, Level, Filter, Transitions));
   function bind$(obj, key, target){
     return function(){ return (target || obj)[key].apply(obj, arguments) };
   }
