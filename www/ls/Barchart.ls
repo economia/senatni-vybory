@@ -149,9 +149,9 @@ Level =
                 if index == 0
                     currentOffset := 0
                     offsetError := 0
-                correctOffset = offsetError + @y level.pozice.length
-                offset = Math.round correctOffset
-                offsetError := correctOffset - offset
+                unroundedOffset = offsetError + @y level.pozice.length
+                offset = Math.round unroundedOffset
+                offsetError := unroundedOffset - offset
                 level.offset = offset - currentOffset
                 level.height = @height - offset
                 currentOffset += level.height

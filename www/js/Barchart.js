@@ -183,14 +183,14 @@
       offsetError = 0;
       x$ = selection;
       x$.each(function(level, index){
-        var correctOffset, offset;
+        var unroundedOffset, offset;
         if (index === 0) {
           currentOffset = 0;
           offsetError = 0;
         }
-        correctOffset = offsetError + this$.y(level.pozice.length);
-        offset = Math.round(correctOffset);
-        offsetError = correctOffset - offset;
+        unroundedOffset = offsetError + this$.y(level.pozice.length);
+        offset = Math.round(unroundedOffset);
+        offsetError = unroundedOffset - offset;
         level.offset = offset - currentOffset;
         level.height = this$.height - offset;
         currentOffset += level.height;
