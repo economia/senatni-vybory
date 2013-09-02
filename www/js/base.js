@@ -29,7 +29,7 @@
     function Klub(id, nazev){
       this.id = id;
       this.nazev = nazev;
-      this.css = this.nazev.toLowerCase().replace('č', 'c').replace('ř', 'r').replace(/[^-0-9a-z]/g, '-');
+      this.css = this.nazev.toLowerCase().replace('č', 'c').replace('ř', 'r').replace('í', 'i').replace(/[^-0-9a-z]/g, '-');
       this.pozice = this.css.charCodeAt(0);
       if (this.css === 'kscm') {
         this.pozice = 5;
@@ -72,11 +72,12 @@
   vybory = {};
   poslanci = {};
   d3.json("../data/data.json", function(err, data){
-    var id, ref$, nazev, poslanec_data, years, x$, barchart, y$, backButton;
+    var id, ref$, nazev, nullKlub, poslanec_data, years, x$, barchart, y$, backButton;
     for (id in ref$ = data.kluby_ids) {
       nazev = ref$[id];
       kluby[id] = new Klub(id, nazev);
     }
+    nullKlub = kluby[9999] = new Klub(9999, 'Nezařazení');
     for (id in ref$ = data.vybory_ids) {
       nazev = ref$[id];
       vybory[id] = new Vybor(id, nazev);
@@ -91,7 +92,7 @@
       pozice = pozice.map(function(arg$){
         var poslanec_id, vybor_id, klub_id, klub, vybor, poslanec;
         poslanec_id = arg$[0], vybor_id = arg$[1], klub_id = arg$[2];
-        klub = kluby[klub_id];
+        klub = kluby[klub_id] || nullKlub;
         vybor = vybory[vybor_id];
         poslanec = poslanci[poslanec_id];
         return new Pozice(poslanec, klub, vybor, year);
@@ -99,8 +100,8 @@
       year_kluby_ids = {};
       year_poslanci_ids = {};
       pozice.forEach(function(pozice){
-        var klub_id, ref$, x$, y$, key$;
-        klub_id = ((ref$ = pozice.klub) != null ? ref$.id : void 8) || 'void';
+        var klub_id, x$, ref$, y$, key$;
+        klub_id = pozice.klub.id;
         x$ = (ref$ = year_kluby_ids[klub_id]) != null
           ? ref$
           : year_kluby_ids[klub_id] = new Level('kluby', klub_id);

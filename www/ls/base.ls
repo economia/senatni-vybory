@@ -10,6 +10,7 @@ class Klub
         @css = @nazev.toLowerCase!
             .replace \č \c
             .replace \ř \r
+            .replace \í \i
             .replace /[^-0-9a-z]/g '-'
         @pozice = @css.charCodeAt 0
         if @css == \kscm
@@ -33,7 +34,7 @@ poslanci = {}
 (err, data) <~ d3.json "../data/data.json"
 for id, nazev of data.kluby_ids
     kluby[id] = new Klub id, nazev
-
+nullKlub = kluby[9999] = new Klub 9999, \Nezařazení
 for id, nazev of data.vybory_ids
     vybory[id] = new Vybor id, nazev
 
@@ -42,14 +43,14 @@ for id, poslanec_data of data.poslanci_ids
 
 years = data.years.map ({year, pozice}) ->
     pozice .= map ([poslanec_id, vybor_id, klub_id]) ->
-        klub     = kluby[klub_id]
+        klub     = kluby[klub_id] || nullKlub
         vybor    = vybory[vybor_id]
         poslanec = poslanci[poslanec_id]
         new Pozice poslanec, klub, vybor, year
     year_kluby_ids = {}
     year_poslanci_ids = {}
     pozice.forEach (pozice)->
-        klub_id = pozice.klub?id || \void
+        klub_id = pozice.klub.id
         year_kluby_ids[klub_id] ?= new Level \kluby klub_id
             ..klub = kluby[klub_id]
             ..pozice.push pozice
