@@ -103,7 +103,7 @@
       x$ = this.content.selectAll('.bar');
       x$.call(bind$(this, 'drawLevels'));
       if (this.lastItem && this.lastItem !== this.item) {
-        y$ = transition = this.content.selectAll(".bar ." + this.lastItem).classed('notHiding', false).classed('toDestroy', true).attr('opacity', 1).transition();
+        y$ = transition = this.content.selectAll(".bar ." + this.lastItem + ".notHiding").classed('notHiding', false).classed('toDestroy', true).attr('opacity', 1).transition();
         y$.call(this.transitionStepper("lastItemDestroy-" + this.lastItem));
         if (this.lastItem === 'poslanci') {
           z$ = d3.selectAll(".bar .toDestroy");

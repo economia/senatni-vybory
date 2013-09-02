@@ -80,7 +80,7 @@ Bar =
         @content.selectAll \.bar
             ..call @~drawLevels
         if @lastItem and @lastItem != @item
-            transition = @content.selectAll ".bar .#{@lastItem}"
+            transition = @content.selectAll ".bar .#{@lastItem}.notHiding"
                 .classed \notHiding no
                 .classed \toDestroy yes
                 .attr \opacity 1
