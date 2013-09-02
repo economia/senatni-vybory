@@ -191,7 +191,7 @@
         level.offset = offset - currentOffset;
         level.height = this$.height - offset;
         currentOffset += level.height;
-        if (level.type === 'poslanci') {
+        if (level.type === 'poslanci' && level.height >= 1) {
           return level.height -= 1;
         }
       });

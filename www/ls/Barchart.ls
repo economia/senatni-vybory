@@ -143,7 +143,7 @@ Level =
                 level.offset = offset - currentOffset
                 level.height = @height - offset
                 currentOffset += level.height
-                if level.type == \poslanci then level.height -= 1
+                if level.type == \poslanci and level.height >= 1 then level.height -= 1
             ..attr \height (.height)
             ..attr \y (.offset)
             ..attr \transform "scale(1, 1)"
