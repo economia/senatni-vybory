@@ -47,6 +47,7 @@ years = data.years.map ({year, pozice}) ->
         vybor    = vybory[vybor_id]
         poslanec = poslanci[poslanec_id]
         new Pozice poslanec, klub, vybor, year
+    pozice .= filter -> it.klub isnt nullKlub
     year_kluby_ids = {}
     year_poslanci_ids = {}
     pozice.forEach (pozice)->
