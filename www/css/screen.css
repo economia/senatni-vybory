@@ -6,7 +6,8 @@ body {
 body .barchart {
   background: #fff;
 }
-body .barchart .axes .x text {
+body .barchart .axes .x text,
+body .barchart .axes .y text {
   font-size: 0.8em;
 }
 body .barchart .bar .kluby,

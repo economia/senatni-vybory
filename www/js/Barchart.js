@@ -2,7 +2,7 @@
   var Dimensionable, XScale, YScale, XAxis, YAxis, Bar, Level, Filter, Transitions, Barchart;
   Dimensionable = {
     margin: {
-      top: 0,
+      top: 10,
       right: 0,
       bottom: 22,
       left: 40
@@ -75,8 +75,9 @@
       x$.tickSize(3);
       x$.tickFormat(d3.format(".0f"));
       x$.outerTickSize(0);
-      x$.orient('right');
+      x$.orient('left');
       y$ = this.yAxisGroup = this.axesGroup.append('g');
+      y$.attr('transform', "translate(" + this.margin.left + "," + this.margin.top + ")");
       y$.attr('class', 'y');
       y$.call(yAxis);
       return y$;

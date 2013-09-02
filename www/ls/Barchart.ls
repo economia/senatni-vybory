@@ -1,6 +1,6 @@
 Dimensionable =
     margin:
-        top: 0
+        top: 10
         right: 0
         bottom: 22
         left: 40
@@ -47,8 +47,9 @@ YAxis =
             ..tickSize 3
             ..tickFormat d3.format ".0f"
             ..outerTickSize 0
-            ..orient \right
+            ..orient \left
         @yAxisGroup = @axesGroup.append \g
+            ..attr \transform "translate(#{@margin.left},#{@margin.top})"
             ..attr \class \y
             ..call yAxis
 Bar =
