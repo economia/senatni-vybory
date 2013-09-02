@@ -8,11 +8,13 @@ Dimensionable =
         @width = @fullWidth - @margin.left - @margin.right
         @height = @fullHeight - @margin.top - @margin.bottom
 
+
 XScale =
     recomputeXScale: ->
         @x ?= d3.scale.ordinal!
             ..rangeRoundBands [0 @width], 0.1
             ..domain @data.map (.year)
+
 
 YScale =
     recomputeYScale: (displayedPart) ->
@@ -28,6 +30,7 @@ YScale =
             693
             Math.max ...lengths
         @y.domain [0, maxValue]
+
 
 XAxis =
     drawXAxis: ->
@@ -45,6 +48,8 @@ XAxis =
             ..call xAxis
             ..selectAll \text
                 ..attr \dy 12
+
+
 YAxis =
     drawYAxis: ->
         @yAxis = d3.svg.axis!
@@ -63,6 +68,7 @@ YAxis =
             ..transition!
                 ..call @transitionStepper \axisUpdate
                 ..call @yAxis
+
 
 Bar =
     drawBars: (item) ->
@@ -203,6 +209,7 @@ Transitions =
             transition
                 ..duration duration
                 ..delay baseDelay * delayMultipier
+
 
 window.Barchart = class Barchart implements Dimensionable, XScale, YScale, XAxis, YAxis, Bar, Level, Filter, Transitions
     (@parentSelector, @data) ->
