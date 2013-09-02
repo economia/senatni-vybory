@@ -287,7 +287,7 @@
       var x$, y$, z$;
       this.parentSelector = parentSelector;
       this.data = data;
-      this.computeDimensions(650, 600);
+      this.computeDimensions(650, 700);
       this.recomputeXScale();
       this.recomputeYScale();
       x$ = this.svg = d3.selectAll(this.parentSelector).append('svg');

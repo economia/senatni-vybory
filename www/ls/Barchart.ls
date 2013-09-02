@@ -213,7 +213,7 @@ Transitions =
 
 window.Barchart = class Barchart implements Dimensionable, XScale, YScale, XAxis, YAxis, Bar, Level, Filter, Transitions
     (@parentSelector, @data) ->
-        @computeDimensions 650 600
+        @computeDimensions 650 700
         @recomputeXScale!
         @recomputeYScale!
         @svg = d3.selectAll @parentSelector .append \svg
