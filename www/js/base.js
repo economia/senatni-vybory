@@ -27,6 +27,7 @@
     Klub.displayName = 'Klub';
     var prototype = Klub.prototype, constructor = Klub;
     function Klub(id, nazev){
+      var ref$;
       this.id = id;
       this.nazev = nazev;
       this.css = this.nazev.toLowerCase().replace('č', 'c').replace('ř', 'r').replace('í', 'i').replace(/[^-0-9a-z]/g, '-');
@@ -34,7 +35,7 @@
       if (this.css === 'kscm') {
         this.ordering = 5;
       }
-      if (this.css === 'nezaraz') {
+      if ((ref$ = this.css) == 'nezaraz' || ref$ == 'mimo-klub') {
         this.ordering = 129;
       }
     }

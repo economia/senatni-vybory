@@ -15,7 +15,7 @@ class Klub
         @ordering = @css.charCodeAt 0
         if @css == \kscm
             @ordering = 5
-        if @css == \nezaraz
+        if @css in <[nezaraz mimo-klub]>
             @ordering = 129
 
 class Poslanec
