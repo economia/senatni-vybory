@@ -28,8 +28,12 @@
     }
   };
   YScale = {
-    recomputeYScale: function(){
-      var lengths, x$, ref$, this$ = this;
+    recomputeYScale: function(displayedPart){
+      var x$, ref$, lengths, maxValue, this$ = this;
+      x$ = (ref$ = this.y) != null
+        ? ref$
+        : this.y = d3.scale.linear();
+      x$.range([this.height, 0]);
       lengths = this.data.map(function(it){
         var length;
         length = 0;
@@ -38,12 +42,8 @@
         });
         return length;
       });
-      x$ = (ref$ = this.y) != null
-        ? ref$
-        : this.y = d3.scale.linear();
-      x$.domain([0, Math.max.apply(Math, lengths)]);
-      x$.range([this.height, 0]);
-      return x$;
+      maxValue = Math.max(693, Math.max.apply(Math, lengths));
+      return this.y.domain([0, maxValue]);
     }
   };
   XAxis = {
@@ -300,7 +300,7 @@
       this.drawYAxis();
     }
     prototype.redraw = function(){
-      this.recomputeYScale();
+      this.recomputeYScale.apply(this, arguments);
       this.redrawYAxis();
       return this.drawBars.apply(this, arguments);
     };

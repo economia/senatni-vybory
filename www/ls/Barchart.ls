@@ -13,16 +13,21 @@ XScale =
         @x ?= d3.scale.ordinal!
             ..rangeRoundBands [0 @width], 0.1
             ..domain @data.map (.year)
+
 YScale =
-    recomputeYScale: ->
+    recomputeYScale: (displayedPart) ->
+        @y ?= d3.scale.linear!
+            ..range [@height, 0]
+
         lengths = @data.map ~>
             length = 0
             it.kluby.forEach (level) ->
                 length += level.pozice.length
             length
-        @y ?= d3.scale.linear!
-            ..domain [0, Math.max ...lengths]
-            ..range [@height, 0]
+        maxValue = Math.max do
+            693
+            Math.max ...lengths
+        @y.domain [0, maxValue]
 
 XAxis =
     drawXAxis: ->
@@ -216,7 +221,7 @@ window.Barchart = class Barchart implements Dimensionable, XScale, YScale, XAxis
         @drawYAxis!
 
     redraw: ->
-        @recomputeYScale!
+        @recomputeYScale ...
         @redrawYAxis!
         @drawBars ...
 
