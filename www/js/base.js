@@ -30,12 +30,12 @@
       this.id = id;
       this.nazev = nazev;
       this.css = this.nazev.toLowerCase().replace('č', 'c').replace('ř', 'r').replace('í', 'i').replace(/[^-0-9a-z]/g, '-');
-      this.pozice = this.css.charCodeAt(0);
+      this.ordering = this.css.charCodeAt(0);
       if (this.css === 'kscm') {
-        this.pozice = 5;
+        this.ordering = 5;
       }
       if (this.css === 'nezaraz') {
-        this.pozice = 129;
+        this.ordering = 129;
       }
     }
     return Klub;
@@ -129,7 +129,7 @@
       year_poslanci = res$;
       year_kluby.sort(function(a, b){
         var ref$;
-        return ((ref$ = a.klub) != null ? ref$.pozice : void 8) - ((ref$ = b.klub) != null ? ref$.pozice : void 8);
+        return ((ref$ = a.klub) != null ? ref$.ordering : void 8) - ((ref$ = b.klub) != null ? ref$.ordering : void 8);
       });
       year_poslanci.sort(function(a, b){
         return a.pozice.length - b.pozice.length;

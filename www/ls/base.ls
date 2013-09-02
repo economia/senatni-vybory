@@ -12,11 +12,11 @@ class Klub
             .replace \ř \r
             .replace \í \i
             .replace /[^-0-9a-z]/g '-'
-        @pozice = @css.charCodeAt 0
+        @ordering = @css.charCodeAt 0
         if @css == \kscm
-            @pozice = 5
+            @ordering = 5
         if @css == \nezaraz
-            @pozice = 129
+            @ordering = 129
 
 class Poslanec
     (@id, {@jmeno, @prijmeni}) ->
@@ -64,7 +64,7 @@ years = data.years.map ({year, pozice}) ->
     year_poslanci = for id, year_poslanec of year_poslanci_ids
         year_poslanec
     year_kluby.sort (a, b) ->
-        a.klub?pozice - b.klub?pozice
+        a.klub?ordering - b.klub?ordering
     year_poslanci.sort (a, b) -> a.pozice.length - b.pozice.length
 
     new Year year, pozice, year_kluby, year_poslanci
