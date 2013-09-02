@@ -1,10 +1,10 @@
 (function(){
-  var Dimensionable, XScale, YScale, Bar, Level, Filter, Transitions, Barchart;
+  var Dimensionable, XScale, YScale, XAxis, Bar, Level, Filter, Transitions, Barchart;
   Dimensionable = {
     margin: {
       top: 0,
       right: 0,
-      bottom: 0,
+      bottom: 30,
       left: 0
     },
     computeDimensions: function(fullWidth, fullHeight){
@@ -44,6 +44,23 @@
       x$.domain([0, Math.max.apply(Math, lengths)]);
       x$.range([0, this.height]);
       return x$;
+    }
+  };
+  XAxis = {
+    drawXAxis: function(){
+      var x$, xAxis, y$, z$;
+      x$ = xAxis = d3.svg.axis();
+      x$.scale(this.x);
+      x$.ticks(d3.time.years);
+      x$.tickSize(3);
+      x$.outerTickSize(0);
+      x$.orient('bottom');
+      y$ = this.xAxisGroup = this.axesGroup.append('g');
+      y$.attr('transform', "translate(" + this.margin.left + ", " + (this.height + this.margin.top) + ")");
+      y$.call(xAxis);
+      z$ = y$.selectAll('text');
+      z$.attr('dy', 9);
+      return y$;
     }
   };
   Bar = {
@@ -230,8 +247,10 @@
     importAll$(prototype, arguments[4]);
     importAll$(prototype, arguments[5]);
     importAll$(prototype, arguments[6]);
+    importAll$(prototype, arguments[7]);
+    importAll$(prototype, arguments[8]);
     function Barchart(parentSelector, data){
-      var x$, y$;
+      var x$, y$, z$;
       this.parentSelector = parentSelector;
       this.data = data;
       this.computeDimensions(650, 600);
@@ -244,13 +263,16 @@
       y$ = this.content = this.svg.append('g');
       y$.attr('class', 'content');
       y$.attr('transform', "translate(" + this.margin.left + ", " + this.margin.top + ")");
+      z$ = this.axesGroup = this.svg.append('g');
+      z$.attr('class', 'axes');
+      this.drawXAxis();
     }
     prototype.redraw = function(){
       this.recomputeYScale();
       return this.drawBars.apply(this, arguments);
     };
     return Barchart;
-  }(Dimensionable, XScale, YScale, Bar, Level, Filter, Transitions));
+  }(Dimensionable, XScale, YScale, void 8, XAxis, Bar, Level, Filter, Transitions));
   function bind$(obj, key, target){
     return function(){ return (target || obj)[key].apply(obj, arguments) };
   }

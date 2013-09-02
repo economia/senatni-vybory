@@ -2,7 +2,7 @@ Dimensionable =
     margin:
         top: 0
         right: 0
-        bottom: 0
+        bottom: 30
         left: 0
     computeDimensions: (@fullWidth, @fullHeight) ->
         @width = @fullWidth - @margin.left - @margin.right
@@ -24,6 +24,19 @@ YScale =
             ..domain [0, Math.max ...lengths]
             ..range [0 @height]
 
+XAxis =
+    drawXAxis: ->
+        xAxis = d3.svg.axis!
+            ..scale @x
+            ..ticks d3.time.years
+            ..tickSize 3
+            ..outerTickSize 0
+            ..orient \bottom
+        @xAxisGroup = @axesGroup.append \g
+            ..attr \transform "translate(#{@margin.left}, #{@height + @margin.top})"
+            ..call xAxis
+            ..selectAll \text
+                ..attr \dy 9
 Bar =
     drawBars: (item) ->
         @lastItem = @item
@@ -161,7 +174,7 @@ Transitions =
                 ..duration duration
                 ..delay baseDelay * delayMultipier
 
-window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, Level, Filter, Transitions
+window.Barchart = class Barchart implements Dimensionable, XScale, YScale, , XAxis, Bar, Level, Filter, Transitions
     (@parentSelector, @data) ->
         @computeDimensions 650 600
         @recomputeXScale!
@@ -173,6 +186,9 @@ window.Barchart = class Barchart implements Dimensionable, XScale, YScale, Bar, 
         @content = @svg.append \g
             ..attr \class \content
             ..attr \transform "translate(#{@margin.left}, #{@margin.top})"
+        @axesGroup = @svg.append \g
+            ..attr \class \axes
+        @drawXAxis!
 
     redraw: ->
         @recomputeYScale!
