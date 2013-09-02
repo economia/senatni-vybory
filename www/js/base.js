@@ -98,9 +98,6 @@
         poslanec = poslanci[poslanec_id];
         return new Pozice(poslanec, klub, vybor, year);
       });
-      pozice = pozice.filter(function(it){
-        return it.klub !== nullKlub;
-      });
       year_kluby_ids = {};
       year_poslanci_ids = {};
       pozice.forEach(function(pozice){
