@@ -42,7 +42,7 @@ combine-scripts = (options = {}) ->
     result = uglify.minify files, minifyOptions
 
     {map, code} = result
-    code += "\n//@ sourceMappingURL=/senatni-vybory/www/js/script.js.map"
+    code += "\n//@ sourceMappingURL=../js/script.js.map"
     fs.writeFile "#__dirname/www/js/script.js", code
     fs.writeFile "#__dirname/www/js/script.js.map", map
 
