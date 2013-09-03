@@ -28,8 +28,8 @@ combine-scripts = (options = {}) ->
     files .= map -> "./www/js/#it"
     result = uglify.minify do
         *   files
-        *   compress: no
-            mangle: no
+        *   compress: options.compression
+            mangle: options.compression
             outSourceMap: "../js/script.js.map"
             sourceRoot: "../../"
     {map, code} = result
@@ -53,5 +53,5 @@ task \build-styles ->
 task \build-script ({currentfile}) ->
     file = relativizeFilename currentfile
     <~ build-script file
-    combine-scripts!
+    combine-scripts compression: no
 
