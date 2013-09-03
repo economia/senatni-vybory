@@ -46,6 +46,14 @@ combine-scripts = (options = {}) ->
     fs.writeFile "#__dirname/www/script.js", code
     fs.writeFile "#__dirname/www/js/script.js.map", map
 
+run-script = (file) ->
+    require! child_process.exec
+    (err, stdout, stderr) <~ exec "lsc #__dirname/#file"
+    throw err if err
+    console.error stderr if stderr
+    console.log stdout
+
+
 relativizeFilename = (file) ->
     file .= replace __dirname, ''
     file .= replace do
@@ -65,6 +73,10 @@ task \build-styles ->
     build-styles compression: no
 task \build-script ({currentfile}) ->
     file = relativizeFilename currentfile
-    <~ build-script file
-    combine-scripts compression: no
+    isServer = \srv == file.substr 0, 3
+    if isServer
+        run-script file
+    else
+        <~ build-script file
+        combine-scripts compression: no
 
