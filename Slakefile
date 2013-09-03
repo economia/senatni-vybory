@@ -20,18 +20,27 @@ build-script = (file, cb) ->
     throw err if err
     cb?!
 
+build-all-scripts = (cb) ->
+    require! child_process.exec
+    (err, result) <~ exec "lsc.cmd -o #__dirname/www/js -c #__dirname/www/ls"
+    throw err if err
+    cb?!
+
 combine-scripts = (options = {}) ->
     require! uglify: "uglify-js"
     require! async
     (err, files) <~ fs.readdir "#__dirname/www/js"
     files .= filter -> it isnt 'script.js' and it isnt 'script.js.map'
     files .= map -> "./www/js/#it"
-    result = uglify.minify do
-        *   files
-        *   compress: options.compression
-            mangle: options.compression
-            outSourceMap: "../js/script.js.map"
-            sourceRoot: "../../"
+    minifyOptions =
+        outSourceMap: "../js/script.js.map"
+        sourceRoot: "../../"
+    if not options.compression
+        minifyOptions
+            ..compress = no
+            ..mangle   = no
+    result = uglify.minify files, minifyOptions
+
     {map, code} = result
     code += "\n//@ sourceMappingURL=/senatni-vybory/www/js/script.js.map"
     fs.writeFile "#__dirname/www/js/script.js", code
@@ -46,8 +55,12 @@ relativizeFilename = (file) ->
 option 'currentfile' 'Latest file that triggered the save' 'FILE'
 task \build ->
     build-styles compression: no
+    <~ build-all-scripts
+    combine-scripts compression: no
 task \deploy ->
     build-styles compression: yes
+    <~ build-all-scripts
+    combine-scripts compression: yes
 task \build-styles ->
     build-styles compression: no
 task \build-script ({currentfile}) ->
