@@ -49,7 +49,7 @@ years = data.years.map ({year, pozice}) ->
         new Pozice poslanec, klub, vybor, year
     year_kluby_ids = {}
     year_poslanci_ids = {}
-    pozice.forEach (pozice)->''
+    pozice.forEach (pozice) ->
         klub_id = pozice.klub.id
         year_kluby_ids[klub_id] ?= new Level \kluby klub_id
             ..klub = kluby[klub_id]
