@@ -20,6 +20,23 @@ build-script = (file, cb) ->
     throw err if err
     cb?!
 
+combine-scripts = (options = {}) ->
+    require! uglify: "uglify-js"
+    require! async
+    (err, files) <~ fs.readdir "#__dirname/www/js"
+    files .= filter -> it isnt 'script.js' and it isnt 'script.js.map'
+    files .= map -> "./www/js/#it"
+    result = uglify.minify do
+        *   files
+        *   compress: no
+            mangle: no
+            outSourceMap: "../js/script.js.map"
+            sourceRoot: "../../"
+    {map, code} = result
+    code += "\n//@ sourceMappingURL=/senatni-vybory/www/js/script.js.map"
+    fs.writeFile "#__dirname/www/js/script.js", code
+    fs.writeFile "#__dirname/www/js/script.js.map", map
+
 relativizeFilename = (file) ->
     file .= replace __dirname, ''
     file .= replace do
@@ -35,5 +52,6 @@ task \build-styles ->
     build-styles compression: no
 task \build-script ({currentfile}) ->
     file = relativizeFilename currentfile
-    build-script file
+    <~ build-script file
+    combine-scripts!
 
