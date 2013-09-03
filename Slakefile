@@ -12,7 +12,7 @@ build-styles = (options = {}) ->
         stylusCompiler.set \compress true
     (err, css) <~ stylusCompiler.render
     throw err if err
-    fs.writeFile "#__dirname/www/css/screen.css", css
+    fs.writeFile "#__dirname/www/screen.css", css
 
 build-script = (file, cb) ->
     require! child_process.exec
@@ -42,8 +42,8 @@ combine-scripts = (options = {}) ->
     result = uglify.minify files, minifyOptions
 
     {map, code} = result
-    code += "\n//@ sourceMappingURL=../js/script.js.map"
-    fs.writeFile "#__dirname/www/js/script.js", code
+    code += "\n//@ sourceMappingURL=./js/script.js.map"
+    fs.writeFile "#__dirname/www/script.js", code
     fs.writeFile "#__dirname/www/js/script.js.map", map
 
 relativizeFilename = (file) ->
