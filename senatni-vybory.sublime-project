@@ -23,7 +23,8 @@
             ]
         }, {
             "name": "Stylus",
-            "cmd": ["stylus.cmd", "-o", "../css/", "./screen.styl"],
+            "cmd": ["slake.cmd", "-c", "$file", "build-styles"],
+            // "cmd": ["stylus.cmd", "-o", "../css/", "./screen.styl"],
             "file_regex": "^(...*?):([0-9]*):?([0-9]*)",
             "selector": "source.stylus"
         }
