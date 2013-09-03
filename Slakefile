@@ -26,8 +26,7 @@ task \build ->
     build-styles compression: no
 task \deploy ->
     build-styles compression: yes
-task \build-styles ({currentfile}) ->
-    file = relativizeFilename currentfile
+task \build-styles ->
     build-styles compression: no
 task \build-scripts ->
 
