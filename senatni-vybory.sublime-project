@@ -26,7 +26,13 @@
             "cmd": ["slake.cmd", "-c", "$file", "build-styles"],
             // "cmd": ["stylus.cmd", "-o", "../css/", "./screen.styl"],
             "file_regex": "^(...*?):([0-9]*):?([0-9]*)",
-            "selector": "source.stylus"
+            "selector": "source.stylus",
+            "variants": [
+                {
+                    "name": "Deploy",
+                    "cmd": ["slake.cmd", "-c", "$file", "deploy"]
+                }
+            ]
         }
     ],
     "settings":
