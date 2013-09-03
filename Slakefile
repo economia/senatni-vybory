@@ -24,6 +24,7 @@ relativizeFilename = (file) ->
     file .= substr 1
 option 'currentfile' 'Latest file that triggered the save' 'FILE'
 task \build ->
+    build-styles compression: no
 task \deploy ->
     build-styles compression: yes
 task \build-styles ({currentfile}) ->
