@@ -20,6 +20,9 @@
                 {
                     "name": "Print",
                     "cmd": ["lsc.cmd", "-cp" ,"$file"]
+                }, {
+                    "name": "Deploy",
+                    "cmd": ["slake.cmd", "-c", "$file", "deploy"]
                 }
             ]
         }, {
