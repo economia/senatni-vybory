@@ -1,10 +1,9 @@
 require! {
-    async
-    stylus
     fs
 }
 
 build-styles = (options = {}) ->
+    require! stylus
     (err, data) <~ fs.readFile "#__dirname/www/styl/screen.styl"
     data .= toString!
     stylusCompiler = stylus data
