@@ -2,4 +2,6 @@
 /www/config.php
 /srv/config.ls
 /*.sublime-workspace
-/www/css/screen.css
+/www/screen.css
+/www/js/*
+/www/script.js
