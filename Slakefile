@@ -28,7 +28,6 @@ build-all-scripts = (cb) ->
 
 combine-scripts = (options = {}) ->
     require! uglify: "uglify-js"
-    require! async
     (err, files) <~ fs.readdir "#__dirname/www/js"
     files .= filter -> it isnt 'script.js' and it isnt 'script.js.map'
     files .= map -> "./www/js/#it"
