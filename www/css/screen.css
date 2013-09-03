@@ -1,133 +1,29 @@
-body {
-  margin: 0px;
-  font-family: arial, sans-serif;
-  background: #eee;
-}
-body .barchart {
-  background: #fff;
-}
-body .barchart .axes .x text,
-body .barchart .axes .y text {
-  font-size: 0.8em;
-}
-body .barchart .axes .y path {
-  fill: #000;
-}
-body .barchart .axes .y line {
-  stroke: #000;
-  stroke-width: 1px;
-}
-body .barchart .bar .kluby,
-body .barchart .bar .poslanci {
-  fill: #ccc;
-}
-body .barchart .bar .kluby:hover,
-body .barchart .bar .poslanci:hover {
-  opacity: 0.7;
-  cursor: pointer;
-}
-body .barchart .bar .kluby.klub-cssd,
-body .barchart .bar .poslanci.klub-cssd {
-  fill: #f29400;
-}
-body .barchart .bar .kluby.klub-ods,
-body .barchart .bar .poslanci.klub-ods {
-  fill: #006ab3;
-}
-body .barchart .bar .kluby.klub-kscm,
-body .barchart .bar .poslanci.klub-kscm {
-  fill: #e3001a;
-}
-body .barchart .bar .kluby.klub-kdu-csl,
-body .barchart .bar .poslanci.klub-kdu-csl {
-  fill: #000;
-}
-body .barchart .bar .kluby.klub-us-deu,
-body .barchart .bar .poslanci.klub-us-deu,
-body .barchart .bar .kluby.klub-us,
-body .barchart .bar .poslanci.klub-us {
-  fill: #015641;
-}
-body .barchart .bar .kluby.klub-sz,
-body .barchart .bar .poslanci.klub-sz,
-body .barchart .bar .kluby.klub-nez--sz,
-body .barchart .bar .poslanci.klub-nez--sz {
-  fill: #00ad00;
-}
-body .barchart .bar .kluby.klub-vv,
-body .barchart .bar .poslanci.klub-vv {
-  fill: #84d0f1;
-}
-body .barchart .bar .kluby.klub-top09-s,
-body .barchart .bar .poslanci.klub-top09-s {
-  fill: #7c0042;
-}
-body .barchart .bar .kluby.klub-spr-rsc,
-body .barchart .bar .poslanci.klub-spr-rsc {
-  fill: #030181;
-}
-body .barchart .bar .kluby.klub-oda,
-body .barchart .bar .poslanci.klub-oda {
-  fill: #0089e6;
-}
-body .barchart .bar .kluby.klub-lb,
-body .barchart .bar .poslanci.klub-lb {
-  fill: #fb8072;
-}
-body .barchart .bar .kluby.klub-kds,
-body .barchart .bar .poslanci.klub-kds {
-  fill: #555;
-}
-body .barchart .bar .kluby.klub-hsd-sms,
-body .barchart .bar .poslanci.klub-hsd-sms {
-  fill: #fdfc02;
-}
-body .barchart .bar .kluby.klub-cmus,
-body .barchart .bar .poslanci.klub-cmus {
-  fill: #0ff;
-}
-body .barchart .bar .kluby.klub-lsns,
-body .barchart .bar .poslanci.klub-lsns {
-  fill: #00008b;
-}
-body .barchart .bar .kluby.klub-lsu,
-body .barchart .bar .poslanci.klub-lsu {
-  fill: #3f3;
-}
-body .barchart .bar .kluby.klub-nezaraz,
-body .barchart .bar .poslanci.klub-nezaraz,
-body .barchart .bar .kluby.klub-void,
-body .barchart .bar .poslanci.klub-void {
-  fill: #ccc;
-}
-body a.backButton {
-  position: absolute;
-  top: 15px;
-  left: 45px;
-  display: block;
-  width: 38px;
-  height: 38px;
-  border: 2px solid #1d1d1d;
-  transition: left 1s;
-  border-radius: 50%;
-  -o-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  background: #fff url("../img/back.png") -2px -2px;
-}
-body a.backButton:hover {
-  background-color: #eee;
-  cursor: pointer;
-}
-body a.backButton:active {
-  background-color: #aaa;
-}
-body a.backButton img {
-  position: absolute;
-  top: -2px;
-  left: -2px;
-}
-body a.backButton.disabled {
-  left: -80px;
-}
+body{margin:0;font-family:arial,sans-serif;background:#eee;}
+body .barchart{background:#fff;}
+body .barchart .axes .x text,body .barchart .axes .y text{font-size:.8em}
+body .barchart .axes .y path{fill:#000}
+body .barchart .axes .y line{stroke:#000;stroke-width:1px}
+body .barchart .bar .kluby,body .barchart .bar .poslanci{fill:#ccc;}
+body .barchart .bar .kluby:hover,body .barchart .bar .poslanci:hover{opacity:.7;cursor:pointer}
+body .barchart .bar .kluby.klub-cssd,body .barchart .bar .poslanci.klub-cssd{fill:#f29400}
+body .barchart .bar .kluby.klub-ods,body .barchart .bar .poslanci.klub-ods{fill:#006ab3}
+body .barchart .bar .kluby.klub-kscm,body .barchart .bar .poslanci.klub-kscm{fill:#e3001a}
+body .barchart .bar .kluby.klub-kdu-csl,body .barchart .bar .poslanci.klub-kdu-csl{fill:#000}
+body .barchart .bar .kluby.klub-us-deu,body .barchart .bar .poslanci.klub-us-deu,body .barchart .bar .kluby.klub-us,body .barchart .bar .poslanci.klub-us{fill:#015641}
+body .barchart .bar .kluby.klub-sz,body .barchart .bar .poslanci.klub-sz,body .barchart .bar .kluby.klub-nez--sz,body .barchart .bar .poslanci.klub-nez--sz{fill:#00ad00}
+body .barchart .bar .kluby.klub-vv,body .barchart .bar .poslanci.klub-vv{fill:#84d0f1}
+body .barchart .bar .kluby.klub-top09-s,body .barchart .bar .poslanci.klub-top09-s{fill:#7c0042}
+body .barchart .bar .kluby.klub-spr-rsc,body .barchart .bar .poslanci.klub-spr-rsc{fill:#030181}
+body .barchart .bar .kluby.klub-oda,body .barchart .bar .poslanci.klub-oda{fill:#0089e6}
+body .barchart .bar .kluby.klub-lb,body .barchart .bar .poslanci.klub-lb{fill:#fb8072}
+body .barchart .bar .kluby.klub-kds,body .barchart .bar .poslanci.klub-kds{fill:#555}
+body .barchart .bar .kluby.klub-hsd-sms,body .barchart .bar .poslanci.klub-hsd-sms{fill:#fdfc02}
+body .barchart .bar .kluby.klub-cmus,body .barchart .bar .poslanci.klub-cmus{fill:#0ff}
+body .barchart .bar .kluby.klub-lsns,body .barchart .bar .poslanci.klub-lsns{fill:#00008b}
+body .barchart .bar .kluby.klub-lsu,body .barchart .bar .poslanci.klub-lsu{fill:#3f3}
+body .barchart .bar .kluby.klub-nezaraz,body .barchart .bar .poslanci.klub-nezaraz,body .barchart .bar .kluby.klub-void,body .barchart .bar .poslanci.klub-void{fill:#ccc}
+body a.backButton{position:absolute;top:15px;left:45px;display:block;width:38px;height:38px;border:2px solid #1d1d1d;transition:left 1s;border-radius:50%;-o-border-radius:50%;-ms-border-radius:50%;-moz-border-radius:50%;-webkit-border-radius:50%;background:#fff url("../img/back.png") -2px -2px;}
+body a.backButton:hover{background-color:#eee;cursor:pointer}
+body a.backButton:active{background-color:#aaa}
+body a.backButton img{position:absolute;top:-2px;left:-2px}
+body a.backButton.disabled{left:-80px}

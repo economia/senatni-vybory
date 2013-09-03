@@ -4,12 +4,14 @@ require! {
     fs
 }
 
-build-styles = (file) ->
+build-styles = (options = {}) ->
     (err, data) <~ fs.readFile "#__dirname/www/styl/screen.styl"
     data .= toString!
-    stylusFile = stylus data
+    stylusCompiler = stylus data
         ..include "#__dirname/www/styl/"
-    (err, css) <~ stylusFile.render
+    if options.compression
+        stylusCompiler.set \compress true
+    (err, css) <~ stylusCompiler.render
     throw err if err
     fs.writeFile "#__dirname/www/css/screen.css", css
 
@@ -23,8 +25,9 @@ relativizeFilename = (file) ->
 option 'currentfile' 'Latest file that triggered the save' 'FILE'
 task \build ->
 task \deploy ->
+    build-styles compression: yes
 task \build-styles ({currentfile}) ->
     file = relativizeFilename currentfile
-    build-styles file
+    build-styles compression: no
 task \build-scripts ->
 
